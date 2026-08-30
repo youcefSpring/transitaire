@@ -17,9 +17,16 @@ use Illuminate\View\View;
 
 class LivraisonController extends Controller
 {
-    public function camionsIndex(): View
+    public function camionsIndex(Request $request): View
     {
-        return view('transport.camions', ['camions' => Camion::orderBy('immatriculation')->get()]);
+        $camions = Camion::query()
+            ->when($request->query('search'), fn ($query, $search) => $query
+                ->where('immatriculation', 'like', "%{$search}%"))
+            ->orderBy('immatriculation')
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('transport.camions', compact('camions'));
     }
 
     public function camionsStore(Request $request): RedirectResponse
@@ -41,9 +48,17 @@ class LivraisonController extends Controller
         return back()->with('message', 'Camion supprimé.');
     }
 
-    public function chauffeursIndex(): View
+    public function chauffeursIndex(Request $request): View
     {
-        return view('transport.chauffeurs', ['chauffeurs' => Chauffeur::orderBy('nom')->get()]);
+        $chauffeurs = Chauffeur::query()
+            ->when($request->query('search'), fn ($query, $search) => $query
+                ->where('nom', 'like', "%{$search}%")
+                ->orWhere('telephone', 'like', "%{$search}%"))
+            ->orderBy('nom')
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('transport.chauffeurs', compact('chauffeurs'));
     }
 
     public function chauffeursStore(Request $request): RedirectResponse
@@ -73,7 +88,8 @@ class LivraisonController extends Controller
             ->when($request->query('date'), fn ($query, $date) => $query
                 ->whereDate('date_heure_chargement', $date))
             ->orderBy('date_heure_chargement')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         return view('transport.livraisons', [
             'livraisons' => $livraisons,

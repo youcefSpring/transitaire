@@ -8,11 +8,11 @@
     </div>
 
     <div class="card">
-        <form class="toolbar no-print" method="GET" action="{{ route('audit.index') }}">
+        <x-filtres :action="route('audit.index')" :paginateur="$logs">
             <div class="field"><label>{{ __('app.commun.numero') }}</label><input name="dossier" value="{{ request('dossier') }}" placeholder="TR-2026-0001" class="mono"></div>
             <div class="field"><label>{{ __('app.commun.date') }}</label><input type="date" name="date" value="{{ request('date') }}" class="mono"></div>
             <button type="submit" class="btn secondary small">🔍</button>
-        </form>
+        </x-filtres>
 
         <div class="table-wrap">
             <table>

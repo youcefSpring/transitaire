@@ -9,6 +9,26 @@
     </div>
 
     <div class="card">
+        <x-filtres :action="route('users.index')" :paginateur="$users">
+            <x-champ-recherche />
+            <div class="field">
+                <label>{{ __('app.users.profil') }}</label>
+                <select name="profile">
+                    <option value="">{{ __('app.commun.tous') }}</option>
+                    @foreach ($profils as $profil)
+                        <option value="{{ $profil->value }}" {{ request('profile') === $profil->value ? 'selected' : '' }}>{{ __("app.profil.{$profil->value}") }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="field">
+                <label>{{ __('app.users.actif') }}</label>
+                <select name="is_active">
+                    <option value="">{{ __('app.commun.tous') }}</option>
+                    <option value="1" {{ request('is_active') === '1' ? 'selected' : '' }}>{{ __('app.commun.actif') }}</option>
+                    <option value="0" {{ request('is_active') === '0' ? 'selected' : '' }}>{{ __('app.commun.inactif') }}</option>
+                </select>
+            </div>
+        </x-filtres>
         <div class="table-wrap">
             <table>
                 <thead><tr><th>{{ __('app.commun.nom') }}</th><th>{{ __('app.commun.email') }}</th><th>{{ __('app.users.profil') }}</th><th>{{ __('app.users.actif') }}</th><th class="amount">{{ __('app.commun.actions') }}</th></tr></thead>

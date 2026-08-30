@@ -25,9 +25,13 @@ class PaiementController extends Controller
     {
         $paiements = Paiement::query()
             ->with('client')
+            ->when($request->query('mode'), fn ($query, $mode) => $query->where('mode', $mode))
+            ->when($request->query('du'), fn ($query, $du) => $query->whereDate('date_paiement', '>=', $du))
+            ->when($request->query('au'), fn ($query, $au) => $query->whereDate('date_paiement', '<=', $au))
             ->when($request->query('client_id'), fn ($query, $clientId) => $query->where('client_id', $clientId))
             ->orderByDesc('date_paiement')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         return view('paiements.index', [
             'paiements' => $paiements,

@@ -9,17 +9,27 @@
     </div>
 
     <div class="card">
-        <form class="toolbar no-print" method="GET" action="{{ route('conteneurs.index') }}">
+        <x-filtres :action="route('conteneurs.index')" :paginateur="$conteneurs">
+            <x-champ-recherche />
+            <div class="field">
+                <label>{{ __('app.commun.client') }}</label>
+                <select name="client_id">
+                    <option value="">{{ __('app.commun.tous') }}</option>
+                    @foreach ($clients as $client)
+                        <option value="{{ $client->id }}" {{ (string) request('client_id') === (string) $client->id ? 'selected' : '' }}>{{ $client->raison_sociale }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="field">
                 <label>{{ __('app.commun.statut') }}</label>
-                <select name="statut" onchange="this.form.submit()">
+                <select name="statut">
                     <option value="">{{ __('app.conteneurs.tous') }}</option>
                     @foreach (\App\Enums\ConteneurStatut::cases() as $statut)
                         <option value="{{ $statut->value }}" {{ request('statut') === $statut->value ? 'selected' : '' }}>{{ __("app.conteneur_statut.{$statut->value}") }}</option>
                     @endforeach
                 </select>
             </div>
-        </form>
+        </x-filtres>
 
         <div class="table-wrap">
             <table>

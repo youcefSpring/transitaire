@@ -64,6 +64,21 @@
     </div>
 
     <div class="card">
+        <x-filtres :action="route('livraisons.index')" :paginateur="$livraisons">
+            <div class="field">
+                <label>{{ __('app.commun.statut') }}</label>
+                <select name="statut">
+                    <option value="">{{ __('app.commun.tous') }}</option>
+                    @foreach (\App\Enums\LivraisonStatut::cases() as $statut)
+                        <option value="{{ $statut->value }}" {{ request('statut') === $statut->value ? 'selected' : '' }}>{{ __("app.livraison_statut.{$statut->value}") }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="field">
+                <label>{{ __('app.commun.date') }}</label>
+                <input type="date" name="date" value="{{ request('date') }}">
+            </div>
+        </x-filtres>
         <div class="table-wrap">
             <table>
                 <thead><tr><th>{{ __('app.commun.dossier') }}</th><th>{{ __('app.transport.chargement') }}</th><th>{{ __('app.transport.destination') }}</th><th>{{ __('app.transport.camion_ou_transporteur') }}</th><th>{{ __('app.transport.chauffeurs') }}</th><th>{{ __('app.commun.statut') }}</th><th>{{ __('app.transport.frais_transport') }}</th><th class="amount">{{ __('app.commun.actions') }}</th></tr></thead>

@@ -55,6 +55,34 @@
     </div>
 
     <div class="card">
+        <x-filtres :action="route('paiements.index')" :paginateur="$paiements">
+            <div class="field">
+                <label>{{ __('app.commun.client') }}</label>
+                <select name="client_id">
+                    <option value="">{{ __('app.commun.tous') }}</option>
+                    @foreach ($clients as $client)
+                        <option value="{{ $client->id }}" {{ (string) request('client_id') === (string) $client->id ? 'selected' : '' }}>{{ $client->raison_sociale }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="field">
+                <label>{{ __('app.paiements.mode') }}</label>
+                <select name="mode">
+                    <option value="">{{ __('app.commun.tous') }}</option>
+                    @foreach (\App\Enums\PaiementMode::cases() as $mode)
+                        <option value="{{ $mode->value }}" {{ request('mode') === $mode->value ? 'selected' : '' }}>{{ __("app.paiement_mode.{$mode->value}") }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="field">
+                <label>{{ __('app.commun.du') }}</label>
+                <input type="date" name="du" value="{{ request('du') }}">
+            </div>
+            <div class="field">
+                <label>{{ __('app.commun.au') }}</label>
+                <input type="date" name="au" value="{{ request('au') }}">
+            </div>
+        </x-filtres>
         <div class="table-wrap">
             <table>
                 <thead><tr><th>{{ __('app.commun.date') }}</th><th>{{ __('app.commun.client') }}</th><th>{{ __('app.paiements.mode') }}</th><th>{{ __('app.commun.numero') }}</th><th>{{ __('app.paiements.reference') }}</th><th>{{ __('app.commun.montant') }}</th></tr></thead>

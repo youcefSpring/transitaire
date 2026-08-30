@@ -15,9 +15,14 @@ class FournisseurController extends Controller
     public function index(Request $request): View
     {
         $fournisseurs = Fournisseur::query()
+            ->when($request->query('search'), fn ($query, $search) => $query
+                ->where(fn ($q) => $q
+                    ->where('nom', 'like', "%{$search}%")
+                    ->orWhere('contact', 'like', "%{$search}%")))
             ->when($request->query('type'), fn ($query, $type) => $query->where('type', $type))
             ->orderBy('nom')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         return view('fournisseurs.index', compact('fournisseurs'));
     }

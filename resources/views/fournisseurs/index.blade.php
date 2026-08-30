@@ -9,17 +9,18 @@
     </div>
 
     <div class="card">
-        <form class="toolbar no-print" method="GET" action="{{ route('fournisseurs.index') }}">
+        <x-filtres :action="route('fournisseurs.index')" :paginateur="$fournisseurs">
+            <x-champ-recherche />
             <div class="field">
                 <label>{{ __('app.commun.type') }}</label>
-                <select name="type" onchange="this.form.submit()">
+                <select name="type">
                     <option value="">{{ __('app.conteneurs.tous') }}</option>
                     @foreach (\App\Enums\FournisseurType::cases() as $type)
                         <option value="{{ $type->value }}" {{ request('type') === $type->value ? 'selected' : '' }}>{{ __("app.fournisseur_type.{$type->value}") }}</option>
                     @endforeach
                 </select>
             </div>
-        </form>
+        </x-filtres>
 
         <div class="table-wrap">
             <table>

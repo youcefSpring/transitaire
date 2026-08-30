@@ -632,3 +632,40 @@ tbody tr:last-child td { border-block-end: 0; }
 }
 
 .field:focus-within .hint { color: var(--text); }
+
+/* ------ Menu repliable (rail) sur grand écran ------ */
+:root { --sidebar-rail-w: 66px; }
+
+.sidebar,
+.sidebar-brand,
+.sidebar nav a { transition: width 0.2s ease, padding 0.2s ease; }
+
+.sidebar .libelle { white-space: nowrap; }
+
+/* Le bouton ☰ est désormais visible aussi sur grand écran */
+.topbar .burger { display: inline-flex; align-items: center; justify-content: center; }
+
+@media (min-width: 1025px) {
+    [data-rail="1"] .sidebar { width: var(--sidebar-rail-w); }
+    [data-rail="1"] .sidebar .libelle { display: none; }
+
+    [data-rail="1"] .sidebar-brand { padding-inline: 0; justify-content: center; gap: 0; }
+    [data-rail="1"] .sidebar-brand > span:not(.logo) { display: none; }
+
+    [data-rail="1"] .sidebar nav { padding-inline: 8px; }
+    [data-rail="1"] .sidebar nav a { justify-content: center; padding-inline: 0; gap: 0; }
+    [data-rail="1"] .sidebar-foot { padding-inline: 8px; }
+    [data-rail="1"] .sidebar-foot .btn { padding-inline: 0; }
+
+    /* le marqueur de gauche laisserait le pictogramme de travers : on le remplace par un fond */
+    [data-rail="1"] .sidebar nav a { border-inline-start-color: transparent; }
+    [data-rail="1"] .sidebar nav a.active { background: var(--primary); }
+}
+
+/* ------ Barres de filtres ------ */
+.toolbar { padding-block-end: 14px; margin-block-end: 14px; border-block-end: 1px solid var(--border); }
+.toolbar .field { min-width: 150px; }
+.toolbar .champ-recherche { flex: 1; min-width: 220px; }
+.toolbar .filtres-actions { flex-direction: row; gap: 6px; align-items: center; min-width: 0; }
+.toolbar .filtres-total { margin-inline-start: auto; min-width: 0; }
+.toolbar .filtres-total .hint { margin: 0; white-space: nowrap; }

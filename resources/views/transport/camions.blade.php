@@ -22,6 +22,9 @@
     </div>
 
     <div class="card">
+        <x-filtres :action="route('camions.index')" :paginateur="$camions">
+            <x-champ-recherche />
+        </x-filtres>
         <div class="table-wrap">
             <table>
                 <thead><tr><th>{{ __('app.transport.immatriculation') }}</th><th>{{ __('app.commun.notes') }}</th><th class="amount">{{ __('app.commun.actions') }}</th></tr></thead>
@@ -46,5 +49,7 @@
                 </tbody>
             </table>
         </div>
+
+        {{ $camions->links() }}
     </div>
 @endsection

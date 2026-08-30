@@ -9,13 +9,9 @@
     </div>
 
     <div class="card">
-        <form class="toolbar" method="GET" action="{{ route('clients.index') }}">
-            <div class="field" style="flex:1;min-width:220px">
-                <label>{{ __('app.commun.rechercher') }}</label>
-                <input name="search" value="{{ request('search') }}">
-            </div>
-            <button class="btn secondary small" type="submit">🔍</button>
-        </form>
+        <x-filtres :action="route('clients.index')" :paginateur="$clients">
+            <x-champ-recherche />
+        </x-filtres>
 
         <div class="table-wrap">
             <table>

@@ -27,6 +27,7 @@ class ClientController extends Controller
             ->with('contacts')
             ->orderBy('raison_sociale')
             ->paginate(15)
+            ->withQueryString()
             ->through(fn (Client $client) => tap($client, fn () => $client->solde = $this->solde->soldeClient($client)['dzd']));
 
         return view('clients.index', compact('clients'));

@@ -31,13 +31,23 @@ class DossierController extends Controller
     {
         $dossiers = Dossier::query()
             ->with('client')
+            ->when($request->query('search'), fn ($query, $search) => $query
+                ->where(fn ($q) => $q
+                    ->where('numero', 'like', "%{$search}%")
+                    ->orWhere('numero_bl_awb', 'like', "%{$search}%")
+                    ->orWhereHas('client', fn ($c) => $c->where('raison_sociale', 'like', "%{$search}%"))))
+            ->when($request->query('client_id'), fn ($query, $clientId) => $query->where('client_id', $clientId))
             ->when($request->query('statut'), fn ($query, $statut) => $query->where('statut', $statut))
             ->when($request->query('type'), fn ($query, $type) => $query->where('type', $type))
             ->when($request->query('bloque'), fn ($query) => $query->where('bloque', true))
             ->orderByDesc('created_at')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
-        return view('dossiers.index', compact('dossiers'));
+        return view('dossiers.index', [
+            'dossiers' => $dossiers,
+            'clients' => Client::orderBy('raison_sociale')->get(['id', 'raison_sociale']),
+        ]);
     }
 
     public function create(): View

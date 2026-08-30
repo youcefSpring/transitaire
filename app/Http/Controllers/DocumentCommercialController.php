@@ -29,11 +29,19 @@ class DocumentCommercialController extends Controller
     {
         $documents = DocumentCommercial::query()
             ->with('client')
+            ->when($request->query('search'), fn ($query, $search) => $query
+                ->where('numero', 'like', "%{$search}%"))
+            ->when($request->query('statut'), fn ($query, $statut) => $query->where('statut', $statut))
+            ->when($request->query('client_id'), fn ($query, $clientId) => $query->where('client_id', $clientId))
             ->when($request->query('type'), fn ($query, $type) => $query->where('type', $type))
             ->orderByDesc('numero')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
-        return view('factures.index', compact('documents'));
+        return view('factures.index', [
+            'documents' => $documents,
+            'clients' => Client::orderBy('raison_sociale')->get(['id', 'raison_sociale']),
+        ]);
     }
 
     public function create(): View

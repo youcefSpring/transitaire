@@ -14,10 +14,13 @@ class AlerteController extends Controller
     {
         $alertes = Alerte::query()
             ->with('dossier')
+            ->when($request->query('search'), fn ($query, $search) => $query
+                ->where('message', 'like', "%{$search}%"))
             ->when($request->query('statut'), fn ($query, $statut) => $query->where('statut', $statut))
             ->when($request->query('type'), fn ($query, $type) => $query->where('type', $type))
             ->orderByDesc('created_at')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         return view('alertes.index', compact('alertes'));
     }

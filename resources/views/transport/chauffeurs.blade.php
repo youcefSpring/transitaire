@@ -22,6 +22,9 @@
     </div>
 
     <div class="card">
+        <x-filtres :action="route('chauffeurs.index')" :paginateur="$chauffeurs">
+            <x-champ-recherche />
+        </x-filtres>
         <div class="table-wrap">
             <table>
                 <thead><tr><th>{{ __('app.commun.nom') }}</th><th>{{ __('app.commun.telephone') }}</th><th class="amount">{{ __('app.commun.actions') }}</th></tr></thead>
@@ -46,5 +49,7 @@
                 </tbody>
             </table>
         </div>
+
+        {{ $chauffeurs->links() }}
     </div>
 @endsection

@@ -17,9 +17,15 @@ class ConteneurController extends Controller
     {
         $conteneurs = Conteneur::query()
             ->with('dossier')
+            ->when($request->query('search'), fn ($query, $search) => $query
+                ->where(fn ($q) => $q
+                    ->where('numero', 'like', "%{$search}%")
+                    ->orWhere('numero_bl', 'like', "%{$search}%")))
+            ->when($request->query('client_id'), fn ($query, $clientId) => $query->where('client_id', $clientId))
             ->when($request->query('statut'), fn ($query, $statut) => $query->where('statut', $statut))
             ->orderBy('date_eta')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         return view('conteneurs.index', [
             'conteneurs' => $conteneurs,

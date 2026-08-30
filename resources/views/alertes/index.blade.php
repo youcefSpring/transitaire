@@ -8,10 +8,11 @@
     </div>
 
     <div class="card">
-        <form class="toolbar no-print" method="GET" action="{{ route('alertes.index') }}">
+        <x-filtres :action="route('alertes.index')" :paginateur="$alertes">
+            <x-champ-recherche />
             <div class="field">
                 <label>{{ __('app.commun.statut') }}</label>
-                <select name="statut" onchange="this.form.submit()">
+                <select name="statut">
                     <option value="">{{ __('app.conteneurs.tous') }}</option>
                     @foreach (\App\Enums\AlerteStatut::cases() as $statut)
                         <option value="{{ $statut->value }}" {{ request('statut') === $statut->value ? 'selected' : '' }}>{{ __("app.alerte_statut.{$statut->value}") }}</option>
@@ -20,14 +21,14 @@
             </div>
             <div class="field">
                 <label>{{ __('app.commun.type') }}</label>
-                <select name="type" onchange="this.form.submit()">
+                <select name="type">
                     <option value="">{{ __('app.conteneurs.tous') }}</option>
                     @foreach (\App\Enums\AlerteType::cases() as $type)
                         <option value="{{ $type->value }}" {{ request('type') === $type->value ? 'selected' : '' }}>{{ __("app.alerte_type.{$type->value}") }}</option>
                     @endforeach
                 </select>
             </div>
-        </form>
+        </x-filtres>
 
         <div class="table-wrap">
             <table>

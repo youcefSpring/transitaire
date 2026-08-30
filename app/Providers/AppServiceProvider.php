@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Pagination rendue avec le style maison (.pagination) plutôt que le gabarit Tailwind par défaut
+        Paginator::defaultView('vendor.pagination.transiatire');
+        Paginator::defaultSimpleView('vendor.pagination.transiatire');
     }
 }
