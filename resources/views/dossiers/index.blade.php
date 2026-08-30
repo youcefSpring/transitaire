@@ -1,0 +1,80 @@
+@extends('layouts.app')
+
+@section('titre', __('app.dossiers.titre'))
+
+@section('content')
+    <div class="page-head">
+        <h1>{{ __('app.dossiers.titre') }}</h1>
+        <div class="actions"><a class="btn" href="{{ route('dossiers.create') }}">＋ {{ __('app.dossiers.nouveau') }}</a></div>
+    </div>
+
+    <div class="card">
+        <form class="toolbar" method="GET" action="{{ route('dossiers.index') }}">
+            <div class="field">
+                <label>{{ __('app.commun.statut') }}</label>
+                <select name="statut" onchange="this.form.submit()">
+                    <option value="">{{ __('app.conteneurs.tous') }}</option>
+                    @foreach (\App\Enums\DossierStatut::cases() as $statut)
+                        <option value="{{ $statut->value }}" {{ request('statut') === $statut->value ? 'selected' : '' }}>{{ __("app.statut.{$statut->value}") }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="field">
+                <label>{{ __('app.dossiers.type') }}</label>
+                <select name="type" onchange="this.form.submit()">
+                    <option value="">{{ __('app.conteneurs.tous') }}</option>
+                    @foreach (\App\Enums\TypeOperation::cases() as $type)
+                        <option value="{{ $type->value }}" {{ request('type') === $type->value ? 'selected' : '' }}>{{ __("app.type_operation.{$type->value}") }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="field">
+                <label>{{ __('app.dossiers.bloque') }}</label>
+                <select name="bloque" onchange="this.form.submit()">
+                    <option value="">{{ __('app.conteneurs.tous') }}</option>
+                    <option value="1" {{ request('bloque') ? 'selected' : '' }}>{{ __('app.dossiers.bloque') }}</option>
+                </select>
+            </div>
+        </form>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>{{ __('app.commun.numero') }}</th>
+                    <th>{{ __('app.commun.client') }}</th>
+                    <th>{{ __('app.dossiers.type') }}</th>
+                    <th>{{ __('app.dossiers.mode_transport') }}</th>
+                    <th>{{ __('app.dossiers.arrivee_prevue') }}</th>
+                    <th>{{ __('app.commun.statut') }}</th>
+                    <th class="amount">{{ __('app.commun.actions') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse ($dossiers as $dossier)
+                    <tr>
+                        <td><a class="mono" href="{{ route('dossiers.show', $dossier->numero) }}">{{ $dossier->numero }}</a></td>
+                        <td>{{ $dossier->client?->raison_sociale }}</td>
+                        <td>{{ __("app.type_operation.{$dossier->type->value}") }}</td>
+                        <td>{{ __("app.mode_transport.{$dossier->mode_transport->value}") }}</td>
+                        <td>{{ $dossier->date_arrivee_prevue->format('d/m/Y') }}</td>
+                        <td>
+                            <span class="badge {{ $dossier->bloque ? 'danger' : 'primary' }}">
+                                {{ $dossier->bloque ? __('app.dossiers.bloque') : __("app.statut.{$dossier->statut->value}") }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <a class="btn secondary small" href="{{ route('dossiers.show', $dossier->numero) }}">{{ __('app.commun.detail') }}</a>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr><td colspan="7" class="empty">{{ __('app.commun.aucune_donnee') }}</td></tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+        {{ $dossiers->links() }}
+    </div>
+@endsection
