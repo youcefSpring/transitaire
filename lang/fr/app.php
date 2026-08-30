@@ -53,6 +53,8 @@ return [
         'nom' => 'Nom',
         'notes' => 'Notes',
         'fournisseur' => 'Fournisseur',
+        'contact' => 'Contact',
+        'detail' => 'Détail',
     ],
 
     'auth' => [
@@ -60,6 +62,8 @@ return [
         'connexion' => 'Se connecter',
         'email' => 'Adresse email',
         'mot_de_passe' => 'Mot de passe',
+        'demo_titre' => 'Comptes de démonstration',
+        'demo_aide' => 'Cliquez sur un profil pour remplir le formulaire. Mot de passe commun :',
     ],
 
     'dashboard' => [
@@ -417,5 +421,84 @@ return [
             'traceabilite' => 'Journal complet de traçabilité : qui a fait quoi, quand, sur quel dossier.',
         ],
         'pied' => 'ERP de gestion pour transitaire — Algérie',
+    ],
+    'devise' => [
+        'DZD' => 'Dinar algérien (DZD)',
+        'EUR' => 'Euro (EUR)',
+        'USD' => 'Dollar américain (USD)',
+    ],
+
+    'frais_sens' => [
+        'facture_client' => 'Facturé au client',
+        'supporte_transitaire' => 'Supporté par le transitaire',
+    ],
+
+    'notification_canal' => [
+        'email' => 'Email',
+        'sms' => 'SMS',
+        'whatsapp' => 'WhatsApp',
+    ],
+
+    'notification_statut' => [
+        'en_file' => 'En file d\'attente',
+        'envoyee' => 'Envoyée',
+        'echec' => 'Échec',
+    ],
+
+    'aide' => [
+        'clients' => [
+            'raison_sociale' => 'Nom légal complet du client tel qu\'il figure sur le registre de commerce. Il apparaîtra sur les devis et les factures.',
+            'nif' => 'Numéro d\'Identification Fiscale (15 chiffres). Obligatoire pour toute facturation ; il doit être unique.',
+            'nis' => 'Numéro d\'Identification Statistique délivré par l\'ONS. Unique, exigé dans les déclarations douanières.',
+            'rc' => 'Numéro du Registre de Commerce, format 16/00-1234567B16. Unique par client.',
+            'telephone' => 'Numéro joignable pendant les opérations, au format international +213…',
+            'email' => 'Adresse utilisée pour l\'envoi des factures et des notifications automatiques.',
+            'conditions_paiement' => 'Délai de règlement convenu (ex. 30 jours fin de mois). Il sert à calculer l\'échéance des factures.',
+            'adresse' => 'Adresse de facturation complète : rue, commune, wilaya.',
+            'contacts' => 'Personnes à joindre chez le client. Le premier contact est utilisé par défaut pour les notifications.',
+        ],
+        'dossiers' => [
+            'client' => 'Client donneur d\'ordre du dossier. Il détermine la facturation et la situation de compte.',
+            'type' => 'Import : marchandise entrant en Algérie. Export : marchandise sortant du territoire.',
+            'mode_transport' => 'Voie d\'acheminement. Elle conditionne le type de titre de transport (BL maritime, AWB aérien, CMR terrestre).',
+            'port_aeroport' => 'Point d\'entrée ou de sortie où s\'effectue le dédouanement (ex. Port d\'Alger).',
+            'fournisseur_destinataire' => 'À l\'import : le fournisseur étranger. À l\'export : le destinataire final.',
+            'arrivee_prevue' => 'Date annoncée par la compagnie (ETA). Elle déclenche les alertes d\'arrivée.',
+            'arrivee_reelle' => 'Date constatée à l\'arrivée (ATA). À renseigner une fois la marchandise arrivée ; sert au calcul des surestaries.',
+            'bl_awb' => 'Numéro du titre de transport : BL maritime, AWB aérien ou lettre de voiture CMR.',
+            'nombre_colis' => 'Nombre total de colis, cartons ou palettes déclarés sur le titre de transport.',
+            'poids' => 'Poids brut total en kilogrammes, tel que déclaré en douane.',
+            'volume' => 'Volume total en mètres cubes. Sert au calcul du fret et de la manutention.',
+            'nature_marchandise' => 'Description générale de la cargaison. Le détail article par article se saisit ensuite dans les marchandises.',
+            'valeur_declaree' => 'Valeur en douane de la marchandise, dans la devise choisie. Base de calcul des droits et taxes.',
+            'devise' => 'Devise de la valeur déclarée. Les montants non-DZD sont convertis au taux du jour.',
+            'incoterm' => 'Règle Incoterm du contrat (FOB, CIF, EXW…). Elle fixe la répartition des frais et des risques.',
+        ],
+        'fournisseurs' => [
+            'nom' => 'Raison sociale du prestataire telle qu\'elle figure sur ses factures.',
+            'type' => 'Nature de la prestation. Elle filtre les fournisseurs proposés lors de la saisie des frais.',
+            'telephone' => 'Numéro d\'exploitation à joindre pour le suivi des opérations.',
+            'email' => 'Adresse utilisée pour les échanges de documents et les réservations.',
+            'contact' => 'Nom de l\'interlocuteur habituel chez ce fournisseur.',
+            'adresse' => 'Adresse du siège ou de l\'agence qui traite vos dossiers.',
+        ],
+        'users' => [
+            'nom' => 'Nom et prénom affichés dans le journal d\'audit à côté de chaque action.',
+            'email' => 'Sert d\'identifiant de connexion. Il doit être unique.',
+            'profil' => 'Détermine les écrans et les actions autorisés. À choisir au plus juste des besoins réels.',
+            'mot_de_passe' => '8 caractères minimum. À la modification, laisser vide pour conserver le mot de passe actuel.',
+            'actif' => 'Un compte inactif est conservé avec son historique mais ne peut plus se connecter.',
+        ],
+        'factures' => [
+            'type' => 'Devis : proposition chiffrée. Facture : document exigible. Avoir : annulation partielle ou totale.',
+            'client' => 'Client facturé. Le document est repris dans sa situation de compte.',
+            'dossier' => 'Dossier de transit rattaché. À laisser vide pour une situation client globale.',
+            'devise' => 'Devise d\'émission du document. Elle s\'applique à toutes les lignes.',
+            'taxes' => 'Montant total des taxes (TVA, timbre). Saisir 0 si le document en est exonéré.',
+            'remise' => 'Remise commerciale déduite du total. Saisir 0 en l\'absence de remise.',
+            'emission' => 'Date d\'émission du document. À laisser vide tant qu\'il reste au brouillon.',
+            'echeance' => 'Date limite de règlement, déduite des conditions de paiement du client. Elle déclenche les alertes d\'impayé.',
+            'lignes' => 'Une ligne par prestation facturée. Le montant est calculé automatiquement : quantité × prix unitaire.',
+        ],
     ],
 ];

@@ -16,22 +16,22 @@ class CamionController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $request->validate([
+        $donnees = $request->validate([
             'immatriculation' => ['required', 'string', 'max:50', 'unique:camions,immatriculation'],
             'notes' => ['nullable', 'string'],
         ]);
 
-        return response()->json(Camion::create($request->validated()), 201);
+        return response()->json(Camion::create($donnees), 201);
     }
 
     public function update(Request $request, Camion $camion): JsonResponse
     {
-        $request->validate([
+        $donnees = $request->validate([
             'immatriculation' => ['required', 'string', 'max:50', 'unique:camions,immatriculation,'.$camion->id],
             'notes' => ['nullable', 'string'],
         ]);
 
-        $camion->update($request->validated());
+        $camion->update($donnees);
 
         return response()->json($camion);
     }

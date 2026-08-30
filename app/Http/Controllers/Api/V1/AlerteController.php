@@ -24,14 +24,14 @@ class AlerteController extends Controller
 
     public function update(Request $request, Alerte $alerte): JsonResponse
     {
-        $request->validate([
+        $donnees = $request->validate([
             'statut' => ['required', 'in:'.implode(',', array_map(
                 fn ($cas) => $cas->value,
                 AlerteStatut::cases(),
             ))],
         ]);
 
-        $alerte->update($request->validated());
+        $alerte->update($donnees);
 
         return response()->json($alerte);
     }

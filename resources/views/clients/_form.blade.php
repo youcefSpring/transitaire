@@ -2,17 +2,19 @@
     <div class="field span-2">
         <label>{{ __('app.clients.raison_sociale') }} *</label>
         <input name="raison_sociale" value="{{ old('raison_sociale', $client->raison_sociale ?? '') }}" required>
+        <x-aide cle="clients.raison_sociale" />
     </div>
-    <div class="field"><label>{{ __('app.clients.nif') }} *</label><input name="nif" value="{{ old('nif', $client->nif ?? '') }}" required class="mono"></div>
-    <div class="field"><label>{{ __('app.clients.nis') }} *</label><input name="nis" value="{{ old('nis', $client->nis ?? '') }}" required class="mono"></div>
-    <div class="field"><label>{{ __('app.clients.rc') }} *</label><input name="rc" value="{{ old('rc', $client->rc ?? '') }}" required class="mono"></div>
-    <div class="field"><label>{{ __('app.commun.telephone') }} *</label><input name="telephone" value="{{ old('telephone', $client->telephone ?? '') }}" placeholder="+213XXXXXXXXX" required class="mono"></div>
-    <div class="field"><label>{{ __('app.commun.email') }} *</label><input type="email" name="email" value="{{ old('email', $client->email ?? '') }}" required></div>
-    <div class="field"><label>{{ __('app.clients.conditions_paiement') }} *</label><input name="conditions_paiement" value="{{ old('conditions_paiement', $client->conditions_paiement ?? '') }}" required></div>
-    <div class="field span-2"><label>{{ __('app.commun.adresse') }} *</label><input name="adresse" value="{{ old('adresse', $client->adresse ?? '') }}" required></div>
+    <div class="field"><label>{{ __('app.clients.nif') }} *</label><input name="nif" value="{{ old('nif', $client->nif ?? '') }}" required class="mono"><x-aide cle="clients.nif" /></div>
+    <div class="field"><label>{{ __('app.clients.nis') }} *</label><input name="nis" value="{{ old('nis', $client->nis ?? '') }}" required class="mono"><x-aide cle="clients.nis" /></div>
+    <div class="field"><label>{{ __('app.clients.rc') }} *</label><input name="rc" value="{{ old('rc', $client->rc ?? '') }}" required class="mono"><x-aide cle="clients.rc" /></div>
+    <div class="field"><label>{{ __('app.commun.telephone') }} *</label><input name="telephone" value="{{ old('telephone', $client->telephone ?? '') }}" placeholder="+213XXXXXXXXX" required class="mono"><x-aide cle="clients.telephone" /></div>
+    <div class="field"><label>{{ __('app.commun.email') }} *</label><input type="email" name="email" value="{{ old('email', $client->email ?? '') }}" required><x-aide cle="clients.email" /></div>
+    <div class="field"><label>{{ __('app.clients.conditions_paiement') }} *</label><input name="conditions_paiement" value="{{ old('conditions_paiement', $client->conditions_paiement ?? '') }}" required><x-aide cle="clients.conditions_paiement" /></div>
+    <div class="field span-2"><label>{{ __('app.commun.adresse') }} *</label><input name="adresse" value="{{ old('adresse', $client->adresse ?? '') }}" required><x-aide cle="clients.adresse" /></div>
 </div>
 
 <h2 style="margin-block-start:18px">{{ __('app.clients.contacts') }}</h2>
+<p class="hint hint-bloc">{{ __('app.aide.clients.contacts') }}</p>
 <table id="contacts-table">
     <thead>
     <tr>

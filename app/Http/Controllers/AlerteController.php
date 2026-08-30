@@ -24,14 +24,14 @@ class AlerteController extends Controller
 
     public function update(Request $request, Alerte $alerte): RedirectResponse
     {
-        $request->validate([
+        $donnees = $request->validate([
             'statut' => ['required', 'in:'.implode(',', array_map(
                 fn ($cas) => $cas->value,
                 AlerteStatut::cases(),
             ))],
         ]);
 
-        $alerte->update($request->validated());
+        $alerte->update($donnees);
 
         return back()->with('message', 'Alerte mise à jour.');
     }

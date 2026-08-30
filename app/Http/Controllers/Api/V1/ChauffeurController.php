@@ -16,22 +16,22 @@ class ChauffeurController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $request->validate([
+        $donnees = $request->validate([
             'nom' => ['required', 'string', 'max:255'],
             'telephone' => ['required', 'string', 'max:20'],
         ]);
 
-        return response()->json(Chauffeur::create($request->validated()), 201);
+        return response()->json(Chauffeur::create($donnees), 201);
     }
 
     public function update(Request $request, Chauffeur $chauffeur): JsonResponse
     {
-        $request->validate([
+        $donnees = $request->validate([
             'nom' => ['required', 'string', 'max:255'],
             'telephone' => ['required', 'string', 'max:20'],
         ]);
 
-        $chauffeur->update($request->validated());
+        $chauffeur->update($donnees);
 
         return response()->json($chauffeur);
     }

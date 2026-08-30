@@ -2,6 +2,11 @@
 
 @section('titre', __('app.factures.nouveau'))
 
+@php
+    $categoriesPrestation = ['transit', 'dedouanement', 'manutention', 'transport', 'stockage', 'frais_portuaires', 'frais_administratifs', 'autres_prestations'];
+    $libellesPrestation = collect($categoriesPrestation)->mapWithKeys(fn ($c) => [$c => __("app.frais_categorie.{$c}")])->all();
+@endphp
+
 @section('content')
     <div class="page-head">
         <h1>{{ __('app.factures.nouveau') }}</h1>
@@ -19,6 +24,7 @@
                             <option value="{{ $type->value }}">{{ __("app.dc_type.{$type->value}") }}</option>
                         @endforeach
                     </select>
+                    <x-aide cle="factures.type" />
                 </div>
                 <div class="field">
                     <label>{{ __('app.commun.client') }} *</label>
@@ -28,6 +34,7 @@
                             <option value="{{ $client->id }}">{{ $client->raison_sociale }}</option>
                         @endforeach
                     </select>
+                    <x-aide cle="factures.client" />
                 </div>
                 <div class="field">
                     <label>{{ __('app.commun.dossier') }}</label>
@@ -37,6 +44,7 @@
                             <option value="{{ $dossier->id }}">{{ $dossier->numero }}</option>
                         @endforeach
                     </select>
+                    <x-aide cle="factures.dossier" />
                 </div>
                 <div class="field">
                     <label>{{ __('app.commun.devise') }} *</label>
@@ -45,14 +53,16 @@
                             <option value="{{ $devise->value }}">{{ $devise->value }}</option>
                         @endforeach
                     </select>
+                    <x-aide cle="factures.devise" />
                 </div>
-                <div class="field"><label>{{ __('app.factures.taxes') }} *</label><input type="number" step="0.01" min="0" name="total_taxes" value="0" required class="mono"></div>
-                <div class="field"><label>{{ __('app.factures.remise') }} *</label><input type="number" step="0.01" min="0" name="remise" value="0" required class="mono"></div>
-                <div class="field"><label>{{ __('app.factures.emission') }}</label><input type="date" name="date_emission" class="mono"></div>
-                <div class="field"><label>{{ __('app.factures.echeance') }}</label><input type="date" name="date_echeance" class="mono"></div>
+                <div class="field"><label>{{ __('app.factures.taxes') }} *</label><input type="number" step="0.01" min="0" name="total_taxes" value="0" required class="mono"><x-aide cle="factures.taxes" /></div>
+                <div class="field"><label>{{ __('app.factures.remise') }} *</label><input type="number" step="0.01" min="0" name="remise" value="0" required class="mono"><x-aide cle="factures.remise" /></div>
+                <div class="field"><label>{{ __('app.factures.emission') }}</label><input type="date" name="date_emission" class="mono"><x-aide cle="factures.emission" /></div>
+                <div class="field"><label>{{ __('app.factures.echeance') }}</label><input type="date" name="date_echeance" class="mono"><x-aide cle="factures.echeance" /></div>
             </div>
 
             <h2 style="margin-block-start:18px">{{ __('app.factures.lignes') }}</h2>
+            <p class="hint hint-bloc">{{ __('app.aide.factures.lignes') }}</p>
             <div class="table-wrap">
                 <table id="lignes-table">
                     <thead><tr><th>{{ __('app.factures.prestation') }} *</th><th>{{ __('app.commun.type') }} *</th><th>{{ __('app.dossiers.quantite') }} *</th><th>{{ __('app.factures.prix_unitaire') }} *</th></tr></thead>
@@ -62,7 +72,7 @@
                             <td><input name="lignes[{{ $loop->index }}][designation]" value="{{ $ligne['designation'] ?? '' }}" required></td>
                             <td>
                                 <select name="lignes[{{ $loop->index }}][categorie]">
-                                    @foreach (['transit', 'dedouanement', 'manutention', 'transport', 'stockage', 'frais_portuaires', 'frais_administratifs', 'autres_prestations'] as $categorie)
+                                    @foreach ($categoriesPrestation as $categorie)
                                         <option value="{{ $categorie }}" {{ ($ligne['categorie'] ?? '') === $categorie ? 'selected' : '' }}>{{ __("app.frais_categorie.{$categorie}") }}</option>
                                     @endforeach
                                 </select>
@@ -91,8 +101,7 @@
 
             ligne.insertCell().innerHTML = '<input name="lignes[' + index + '][designation]" required>';
 
-            var options = @json(collect(['transit', 'dedouanement', 'manutention', 'transport', 'stockage', 'frais_portuaires', 'frais_administratifs', 'autres_prestations'])
-                ->mapWithKeys(fn ($c) => [$c => __("app.frais_categorie.{$c}")])->all());
+            var options = @json($libellesPrestation);
             var select = '<select name="lignes[' + index + '][categorie]">';
             for (var valeur in options) { select += '<option value="' + valeur + '">' + options[valeur] + '</option>'; }
             select += '</select>';

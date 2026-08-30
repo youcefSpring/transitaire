@@ -24,12 +24,12 @@ class LivraisonController extends Controller
 
     public function camionsStore(Request $request): RedirectResponse
     {
-        $request->validate([
+        $donnees = $request->validate([
             'immatriculation' => ['required', 'string', 'max:50', 'unique:camions,immatriculation'],
             'notes' => ['nullable', 'string'],
         ]);
 
-        Camion::create($request->validated());
+        Camion::create($donnees);
 
         return back()->with('message', 'Camion enregistré.');
     }
@@ -48,12 +48,12 @@ class LivraisonController extends Controller
 
     public function chauffeursStore(Request $request): RedirectResponse
     {
-        $request->validate([
+        $donnees = $request->validate([
             'nom' => ['required', 'string', 'max:255'],
             'telephone' => ['required', 'string', 'max:20'],
         ]);
 
-        Chauffeur::create($request->validated());
+        Chauffeur::create($donnees);
 
         return back()->with('message', 'Chauffeur enregistré.');
     }

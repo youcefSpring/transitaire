@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ __('app.landing.accroche') }}">
     <title>{{ __('app.nom') }} — {{ __('app.landing.pied') }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script>
         (function () {
@@ -50,21 +53,21 @@
         <h2>{{ __('app.landing.modules_titre') }}</h2>
         <div class="modules-grid">
             @foreach ([
-                ['clients', '👥', 'nav.clients'],
-                ['dossiers', '📁', 'nav.dossiers'],
-                ['douane', '🛃', 'dossiers.douane'],
-                ['documents', '📄', 'dossiers.documents'],
-                ['frais', '💰', 'dossiers.frais'],
-                ['facturation', '🧾', 'nav.factures'],
-                ['paiements', '💳', 'nav.paiements'],
-                ['transport', '🚛', 'nav.transport'],
-                ['alertes', '🔔', 'nav.alertes'],
-                ['dashboard', '📊', 'nav.dashboard'],
-                ['rapports', '📜', 'nav.rapports'],
-                ['traceabilite', '🧭', 'nav.audit'],
+                ['clients', 'clients', 'nav.clients'],
+                ['dossiers', 'dossiers', 'nav.dossiers'],
+                ['douane', 'douane', 'dossiers.douane'],
+                ['documents', 'documents', 'dossiers.documents'],
+                ['frais', 'frais', 'dossiers.frais'],
+                ['facturation', 'facturation', 'nav.factures'],
+                ['paiements', 'paiements', 'nav.paiements'],
+                ['transport', 'transport', 'nav.transport'],
+                ['alertes', 'alertes', 'nav.alertes'],
+                ['dashboard', 'dashboard', 'nav.dashboard'],
+                ['rapports', 'rapports', 'nav.rapports'],
+                ['traceabilite', 'traceabilite', 'nav.audit'],
             ] as [$cle, $icone, $titre])
                 <div class="module-card">
-                    <span class="icone">{{ $icone }}</span>
+                    <span class="icone"><x-icone :name="$icone" size="22" /></span>
                     <h3>{{ __("app.{$titre}") }}</h3>
                     <p>{{ __("app.landing.modules.{$cle}") }}</p>
                 </div>
