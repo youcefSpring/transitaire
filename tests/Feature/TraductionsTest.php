@@ -26,6 +26,22 @@ class TraductionsTest extends TestCase
         );
     }
 
+    public function test_premiere_visite_affiche_l_arabe_memes_si_le_serveur_est_mal_configure(): void
+    {
+        config(['app.locale' => 'en', 'app.fallback_locale' => 'en']);
+
+        $response = $this->get('/');
+
+        $response->assertStatus(200)
+            ->assertSee('lang="ar"', false);
+
+        $this->assertDoesNotMatchRegularExpression(
+            '/app\.[a-z_]+\.[a-z_]+/',
+            strip_tags($response->getContent()),
+            'Un serveur sans APP_LOCALE doit malgré tout démarrer en arabe.',
+        );
+    }
+
     public function test_les_erreurs_de_validation_sont_traduites_en_arabe_des_la_premiere_requete(): void
     {
         $response = $this->from('/login')->post('/login', []);
