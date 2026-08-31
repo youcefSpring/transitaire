@@ -17,7 +17,7 @@ class TraductionsTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSee('lang="ar"', false)
-            ->assertSee('كل نشاط الوكيل البحري في منصة واحدة', false);
+            ->assertSee('كل نشاط الترانزيت في منصة واحدة', false);
 
         $this->assertDoesNotMatchRegularExpression(
             '/app\.[a-z_]+\.[a-z_]+/',
@@ -65,7 +65,7 @@ class TraductionsTest extends TestCase
         $this->get('/locale/ar');
         $ar = $this->get('/');
 
-        $ar->assertSee('كل نشاط الوكيل البحري في منصة واحدة', false)
+        $ar->assertSee('كل نشاط الترانزيت في منصة واحدة', false)
             ->assertSee('lang="ar"', false);
     }
 
