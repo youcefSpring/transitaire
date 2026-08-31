@@ -556,6 +556,20 @@ return [
     ],
 
     'aide' => [
+        'conteneurs' => [
+            'intro' => 'Enregistrez le conteneur dès la réception du BL : il déclenche le suivi attente → sortie → retour et l\'alerte d\'arrivée de navire.',
+            'numero' => 'Numéro ISO du conteneur : 4 lettres (code propriétaire, ex. ABCU = APL) + 7 chiffres, peint sur la coque et reporté sur le connaissement. Ex. : ABCU1234567.',
+            'type' => 'Taille et équipement du conteneur : 20\', 40\', 40\' HC (high cube), Reefer (réfrigéré)…',
+            'numero_bl' => 'Numéro du connaissement (Bill of Lading) maritime sur lequel le conteneur est embarqué.',
+            'navire' => 'Nom du navire (ou du vol) qui transporte le conteneur. Optionnel pour l\'acheminement terrestre.',
+            'port_depart' => 'Port ou aéroport de chargement du conteneur, indiqué sur le BL.',
+            'port_arrivee' => 'Port ou aéroport d\'arrivée en Algérie où le conteneur sera dédouané.',
+            'date_eta' => 'ETA — date estimée d\'arrivée du navire au port, annoncée par la compagnie.',
+            'date_ata' => 'ATA — date réelle d\'arrivée constatée à l\'accostage. Elle doit être postérieure ou égale à l\'ETA.',
+            'client' => 'Client propriétaire de la marchandise contenue dans le conteneur.',
+            'dossier' => 'Dossier de transit de rattachement : c\'est lui qui pilote le dédouanement, les frais et la facturation du conteneur.',
+        ],
+
         'clients' => [
             'raison_sociale' => 'Nom légal complet du client tel qu\'il figure sur le registre de commerce. Il apparaîtra sur les devis et les factures.',
             'nif' => 'Numéro d\'Identification Fiscale (15 chiffres). Obligatoire pour toute facturation ; il doit être unique.',

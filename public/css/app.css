@@ -493,6 +493,10 @@ tbody tr:last-child td { border-block-end: 0; }
 /* Flèches directionnelles : les miroiter en RTL (→ devient ← visuellement). */
 [dir="rtl"] .fl { display: inline-block; transform: scaleX(-1); }
 
+/* Tableaux en RTL : les cellules numériques (incrustées en LTR pour les
+   chiffres) doivent rester alignées sur le même bord que leur en-tête. */
+[dir="rtl"] td.mono, [dir="rtl"] td.amount { text-align: end; }
+
 .landing {
     min-height: 100vh;
     background:

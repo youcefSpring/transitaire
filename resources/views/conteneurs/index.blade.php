@@ -58,17 +58,18 @@
 
     <div class="card no-print">
         <h2>{{ __('app.conteneurs.nouveau') }}</h2>
+        <p class="hint hint-bloc">{{ __('app.aide.conteneurs.intro') }}</p>
         <form method="POST" action="{{ route('conteneurs.store') }}">
             @csrf
             <div class="form-grid">
-                <div class="field"><label>{{ __('app.conteneurs.numero') }} * (ISO)</label><input name="numero" value="{{ old('numero') }}" placeholder="ABCU1234567" required class="mono"></div>
-                <div class="field"><label>{{ __('app.commun.type') }} *</label><input name="type" value="{{ old('type') }}" placeholder="20', 40'…" required></div>
-                <div class="field"><label>{{ __('app.conteneurs.bl') }} *</label><input name="numero_bl" value="{{ old('numero_bl') }}" required class="mono"></div>
-                <div class="field"><label>{{ __('app.dossiers.navire') }}</label><input name="navire" value="{{ old('navire') }}"></div>
-                <div class="field"><label>{{ __('app.dossiers.port_depart') }} *</label><input name="port_depart" value="{{ old('port_depart') }}" required></div>
-                <div class="field"><label>{{ __('app.dossiers.port_arrivee') }} *</label><input name="port_arrivee" value="{{ old('port_arrivee') }}" required></div>
-                <div class="field"><label>{{ __('app.dossiers.eta') }} *</label><input type="date" name="date_eta" value="{{ old('date_eta') }}" required class="mono"></div>
-                <div class="field"><label>{{ __('app.dossiers.ata') }}</label><input type="date" name="date_ata" value="{{ old('date_ata') }}" class="mono"></div>
+                <div class="field"><label>{{ __('app.conteneurs.numero') }} * (ISO)</label><input name="numero" value="{{ old('numero') }}" placeholder="ABCU1234567" required class="mono"><x-aide cle="conteneurs.numero" /></div>
+                <div class="field"><label>{{ __('app.commun.type') }} *</label><input name="type" value="{{ old('type') }}" placeholder="20', 40'…" required><x-aide cle="conteneurs.type" /></div>
+                <div class="field"><label>{{ __('app.conteneurs.bl') }} *</label><input name="numero_bl" value="{{ old('numero_bl') }}" required class="mono"><x-aide cle="conteneurs.numero_bl" /></div>
+                <div class="field"><label>{{ __('app.dossiers.navire') }}</label><input name="navire" value="{{ old('navire') }}"><x-aide cle="conteneurs.navire" /></div>
+                <div class="field"><label>{{ __('app.dossiers.port_depart') }} *</label><input name="port_depart" value="{{ old('port_depart') }}" required><x-aide cle="conteneurs.port_depart" /></div>
+                <div class="field"><label>{{ __('app.dossiers.port_arrivee') }} *</label><input name="port_arrivee" value="{{ old('port_arrivee') }}" required><x-aide cle="conteneurs.port_arrivee" /></div>
+                <div class="field"><label>{{ __('app.dossiers.eta') }} *</label><input type="date" name="date_eta" value="{{ old('date_eta') }}" required class="mono"><x-aide cle="conteneurs.date_eta" /></div>
+                <div class="field"><label>{{ __('app.dossiers.ata') }}</label><input type="date" name="date_ata" value="{{ old('date_ata') }}" class="mono"><x-aide cle="conteneurs.date_ata" /></div>
                 <div class="field">
                     <label>{{ __('app.commun.client') }} *</label>
                     <select name="client_id" required>
@@ -77,6 +78,7 @@
                             <option value="{{ $client->id }}">{{ $client->raison_sociale }}</option>
                         @endforeach
                     </select>
+                    <x-aide cle="conteneurs.client" />
                 </div>
                 <div class="field">
                     <label>{{ __('app.commun.dossier') }} *</label>
@@ -86,6 +88,7 @@
                             <option value="{{ $dossier->id }}">{{ $dossier->numero }}</option>
                         @endforeach
                     </select>
+                    <x-aide cle="conteneurs.dossier" />
                 </div>
             </div>
             <button type="submit" class="btn" style="margin-block-start:14px">{{ __('app.commun.enregistrer') }}</button>
