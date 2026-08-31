@@ -67,6 +67,6 @@ class PaiementController extends Controller
             $paiement->id,
         );
 
-        return back()->with('message', 'Paiement enregistré.');
+        return back()->with('message', __('app.messages.paiement_enregistre'));
     }
 }

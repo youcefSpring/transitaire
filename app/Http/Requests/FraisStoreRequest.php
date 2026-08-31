@@ -39,7 +39,7 @@ class FraisStoreRequest extends FormRequest
                         : self::CATEGORIES_CLIENT;
 
                     if (! in_array($value, $valides, true)) {
-                        $fail('Catégorie invalide pour ce sens de frais (§7).');
+                        $fail(__('app.messages.categorie_frais_invalide'));
                     }
                 },
             ],

@@ -38,14 +38,14 @@ class LivraisonController extends Controller
 
         Camion::create($donnees);
 
-        return back()->with('message', 'Camion enregistré.');
+        return back()->with('message', __('app.messages.camion_enregistre'));
     }
 
     public function camionsDestroy(Camion $camion): RedirectResponse
     {
         $camion->delete();
 
-        return back()->with('message', 'Camion supprimé.');
+        return back()->with('message', __('app.messages.camion_supprime'));
     }
 
     public function chauffeursIndex(Request $request): View
@@ -70,14 +70,14 @@ class LivraisonController extends Controller
 
         Chauffeur::create($donnees);
 
-        return back()->with('message', 'Chauffeur enregistré.');
+        return back()->with('message', __('app.messages.chauffeur_enregistre'));
     }
 
     public function chauffeursDestroy(Chauffeur $chauffeur): RedirectResponse
     {
         $chauffeur->delete();
 
-        return back()->with('message', 'Chauffeur supprimé.');
+        return back()->with('message', __('app.messages.chauffeur_supprime'));
     }
 
     public function index(Request $request): View
@@ -106,20 +106,20 @@ class LivraisonController extends Controller
     {
         Livraison::create($request->validated());
 
-        return redirect()->route('livraisons.index')->with('message', 'Livraison planifiée.');
+        return redirect()->route('livraisons.index')->with('message', __('app.messages.livraison_planifiee'));
     }
 
     public function statut(LivraisonStatutRequest $request, Livraison $livraison): RedirectResponse
     {
         $livraison->update(['statut' => $request->enum('statut', LivraisonStatut::class)]);
 
-        return back()->with('message', 'Statut de livraison mis à jour.');
+        return back()->with('message', __('app.messages.statut_livraison_mis_a_jour'));
     }
 
     public function destroy(Livraison $livraison): RedirectResponse
     {
         $livraison->delete();
 
-        return redirect()->route('livraisons.index')->with('message', 'Livraison supprimée.');
+        return redirect()->route('livraisons.index')->with('message', __('app.messages.livraison_supprimee'));
     }
 }

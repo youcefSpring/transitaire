@@ -22,7 +22,7 @@ class DedouanementController extends Controller
             $request->user(),
         );
 
-        return redirect()->route('dossiers.show', $numero)->with('message', 'Étape douanière enregistrée.');
+        return redirect()->route('dossiers.show', $numero)->with('message', __('app.messages.etape_douaniere_enregistree'));
     }
 
     private function dossier(string $numero): Dossier

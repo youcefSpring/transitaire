@@ -36,7 +36,7 @@ class FournisseurController extends Controller
     {
         Fournisseur::create($request->validated());
 
-        return redirect()->route('fournisseurs.index')->with('message', 'Fournisseur enregistré.');
+        return redirect()->route('fournisseurs.index')->with('message', __('app.messages.fournisseur_enregistre'));
     }
 
     public function show(Fournisseur $fournisseur): View
@@ -59,13 +59,13 @@ class FournisseurController extends Controller
     {
         $fournisseur->update($request->validated());
 
-        return redirect()->route('fournisseurs.show', $fournisseur)->with('message', 'Fournisseur mis à jour.');
+        return redirect()->route('fournisseurs.show', $fournisseur)->with('message', __('app.messages.fournisseur_mis_a_jour'));
     }
 
     public function destroy(Fournisseur $fournisseur): RedirectResponse
     {
         $fournisseur->delete();
 
-        return redirect()->route('fournisseurs.index')->with('message', 'Fournisseur supprimé.');
+        return redirect()->route('fournisseurs.index')->with('message', __('app.messages.fournisseur_supprime'));
     }
 }

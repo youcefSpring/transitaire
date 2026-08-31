@@ -38,20 +38,20 @@ class ConteneurController extends Controller
     {
         Conteneur::create($request->validated());
 
-        return redirect()->route('conteneurs.index')->with('message', 'Conteneur enregistré.');
+        return redirect()->route('conteneurs.index')->with('message', __('app.messages.conteneur_enregistre'));
     }
 
     public function update(ConteneurUpdateRequest $request, Conteneur $conteneur): RedirectResponse
     {
         $conteneur->update($request->validated());
 
-        return redirect()->route('conteneurs.index')->with('message', 'Conteneur mis à jour.');
+        return redirect()->route('conteneurs.index')->with('message', __('app.messages.conteneur_mis_a_jour'));
     }
 
     public function destroy(Conteneur $conteneur): RedirectResponse
     {
         $conteneur->delete();
 
-        return redirect()->route('conteneurs.index')->with('message', 'Conteneur supprimé.');
+        return redirect()->route('conteneurs.index')->with('message', __('app.messages.conteneur_supprime'));
     }
 }

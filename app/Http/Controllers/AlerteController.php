@@ -36,6 +36,6 @@ class AlerteController extends Controller
 
         $alerte->update($donnees);
 
-        return back()->with('message', 'Alerte mise à jour.');
+        return back()->with('message', __('app.messages.alerte_mise_a_jour'));
     }
 }

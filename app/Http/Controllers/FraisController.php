@@ -15,7 +15,7 @@ class FraisController extends Controller
             'created_by' => $request->user()->id,
         ]);
 
-        return redirect()->route('dossiers.show', $numero)->with('message', 'Frais enregistré.');
+        return redirect()->route('dossiers.show', $numero)->with('message', __('app.messages.frais_enregistre'));
     }
 
     public function destroy(Frai $frai): RedirectResponse
@@ -23,7 +23,7 @@ class FraisController extends Controller
         $numero = $frai->dossier?->numero;
         $frai->delete();
 
-        return redirect()->route('dossiers.show', $numero)->with('message', 'Frais supprimé.');
+        return redirect()->route('dossiers.show', $numero)->with('message', __('app.messages.frais_supprime'));
     }
 
     private function dossier(string $numero): Dossier

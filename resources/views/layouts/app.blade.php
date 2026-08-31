@@ -68,7 +68,7 @@
 
             @if ($errors->any())
                 <div class="errors">
-                    {{ __('validation.failed') !== 'validation.failed' ? __('validation.failed') : 'Erreurs de validation' }}
+                    {{ __('validation.failed') }}
                     <ul>
                         @foreach ($errors->all() as $erreur)
                             <li>{{ $erreur }}</li>

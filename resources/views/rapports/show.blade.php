@@ -5,7 +5,10 @@
 @section('content')
     <div class="page-head">
         <h1>{{ __('app.rapports.types.'.$type) }}</h1>
-        <div class="actions no-print"><button type="button" class="btn secondary small" onclick="window.print()">🖨 {{ __('app.commun.imprimer') }}</button></div>
+        <div class="actions no-print">
+            <a class="btn small" href="{{ route('rapports.pdf', $type) }}?du={{ $du->toDateString() }}&au={{ $au->toDateString() }}">🖨 {{ __('app.commun.pdf') }}</a>
+            <button type="button" class="btn secondary small" onclick="window.print()">🖨 {{ __('app.commun.imprimer') }}</button>
+        </div>
     </div>
 
     <div class="card no-print">

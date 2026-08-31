@@ -28,7 +28,7 @@ class LoginController extends Controller
         $user = User::where('email', $credentials['email'])->first();
 
         if ($user === null || ! Hash::check($credentials['password'], $user->password) || ! $user->is_active) {
-            throw ValidationException::withMessages(['email' => 'Identifiants invalides ou compte désactivé.']);
+            throw ValidationException::withMessages(['email' => __('app.messages.auth_invalides')]);
         }
 
         Auth::login($user);

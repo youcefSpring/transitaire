@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/dossiers', [DossierController::class, 'store'])->name('dossiers.store');
     Route::get('/dossiers/{numero}', [DossierController::class, 'show'])->name('dossiers.show');
     Route::get('/dossiers/{numero}/edit', [DossierController::class, 'edit'])->name('dossiers.edit');
+    Route::get('/dossiers/{numero}/pdf', [DossierController::class, 'pdf'])->name('dossiers.pdf');
     Route::put('/dossiers/{numero}', [DossierController::class, 'update'])->name('dossiers.update');
     Route::patch('/dossiers/{numero}/statut', [DossierController::class, 'statut'])->name('dossiers.statut');
     Route::patch('/dossiers/{numero}/blocage', [DossierController::class, 'blocage'])->name('dossiers.blocage');
@@ -76,6 +77,7 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/documents-commerciaux/create', [DocumentCommercialController::class, 'create'])->name('documents-commerciaux.create');
     Route::post('/documents-commerciaux', [DocumentCommercialController::class, 'store'])->name('documents-commerciaux.store');
     Route::get('/documents-commerciaux/{documentCommercial}', [DocumentCommercialController::class, 'show'])->name('documents-commerciaux.show');
+    Route::get('/documents-commerciaux/{documentCommercial}/pdf', [DocumentCommercialController::class, 'pdf'])->name('documents-commerciaux.pdf');
     Route::patch('/documents-commerciaux/{documentCommercial}/statut', [DocumentCommercialController::class, 'statut'])->name('documents-commerciaux.statut');
     Route::delete('/documents-commerciaux/{documentCommercial}', [DocumentCommercialController::class, 'destroy'])->name('documents-commerciaux.destroy');
 
@@ -106,6 +108,7 @@ Route::middleware('auth')->group(function (): void {
 
     Route::get('/rapports', [RapportController::class, 'index'])->name('rapports.index');
     Route::get('/rapports/{type}', [RapportController::class, 'show'])->name('rapports.show');
+    Route::get('/rapports/{type}/pdf', [RapportController::class, 'pdf'])->name('rapports.pdf');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');

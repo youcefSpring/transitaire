@@ -32,14 +32,20 @@ class DouaneService
 
         if (in_array($etape, $existantes, true)) {
             throw ValidationException::withMessages([
-                'etape' => "L'étape {$etape->value} est déjà enregistrée pour le dossier {$dossier->numero}.",
+                'etape' => __('app.messages.etape_deja_enregistree', [
+                    'etape' => __("app.douane_etape.{$etape->value}"),
+                    'numero' => $dossier->numero,
+                ]),
             ]);
         }
 
         foreach ($this->prealables($etape) as $prealable) {
             if (! in_array($prealable, $existantes, true)) {
                 throw ValidationException::withMessages([
-                    'etape' => "L'étape {$prealable->value} doit être enregistrée avant {$etape->value} (§6).",
+                    'etape' => __('app.messages.etape_prealable_manquant', [
+                        'prealable' => __("app.douane_etape.{$prealable->value}"),
+                        'etape' => __("app.douane_etape.{$etape->value}"),
+                    ]),
                 ]);
             }
         }

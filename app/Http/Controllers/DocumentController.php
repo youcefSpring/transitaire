@@ -19,14 +19,14 @@ class DocumentController extends Controller
 
         $this->televerser($request, 'dossier', $dossier->id, "documents/{$dossier->numero}");
 
-        return redirect()->route('dossiers.show', $numero)->with('message', 'Document téléversé et rattaché au dossier.');
+        return redirect()->route('dossiers.show', $numero)->with('message', __('app.messages.document_televerse'));
     }
 
     public function storeClient(DocumentUploadRequest $request, Client $client): RedirectResponse
     {
         $this->televerser($request, 'client', $client->id, "documents/clients/{$client->id}");
 
-        return redirect()->route('clients.show', $client)->with('message', 'Document administratif ajouté.');
+        return redirect()->route('clients.show', $client)->with('message', __('app.messages.document_client_ajoute'));
     }
 
     public function download(Document $document): StreamedResponse
@@ -38,7 +38,7 @@ class DocumentController extends Controller
     {
         $document->delete();
 
-        return back()->with('message', 'Document supprimé.');
+        return back()->with('message', __('app.messages.document_supprime'));
     }
 
     private function televerser(DocumentUploadRequest $request, string $type, int $id, string $prefixe): Document

@@ -14,8 +14,10 @@ use App\Services\AuditService;
 use App\Services\DossierService;
 use App\Services\MargeService;
 use App\Services\NumerotationService;
+use App\Services\PdfExportService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class DossierController extends Controller
@@ -25,6 +27,7 @@ class DossierController extends Controller
         private readonly DossierService $dossiers,
         private readonly MargeService $marges,
         private readonly AuditService $audit,
+        private readonly PdfExportService $pdfs,
     ) {}
 
     public function index(Request $request): View
@@ -64,7 +67,7 @@ class DossierController extends Controller
 
         $this->audit->journaliser($request->user(), "Création du dossier #{$dossier->numero}", $dossier);
 
-        return redirect()->route('dossiers.show', $dossier->numero)->with('message', "Dossier #{$dossier->numero} créé.");
+        return redirect()->route('dossiers.show', $dossier->numero)->with('message', __('app.messages.dossier_cree', ['numero' => $dossier->numero]));
     }
 
     public function show(string $numero): View
@@ -97,6 +100,27 @@ class DossierController extends Controller
         ]);
     }
 
+    /**
+     * Synthèse officielle du dossier (PDF), style algérien.
+     */
+    public function pdf(string $numero): Response
+    {
+        $dossier = $this->dossier($numero)->load([
+            'client',
+            'marchandises',
+            'douaneEtapes.executedBy',
+            'frais.fournisseur',
+            'documentsCommerciaux',
+        ]);
+
+        $marge = $this->marges->margeDossier($dossier);
+
+        return $this->pdfs->telecharger('pdf.dossier', [
+            'dossier' => $dossier,
+            'marge' => $marge,
+        ], "{$dossier->numero}.pdf");
+    }
+
     public function update(DossierUpdateRequest $request, string $numero): RedirectResponse
     {
         $dossier = $this->dossier($numero);
@@ -104,14 +128,14 @@ class DossierController extends Controller
 
         $this->audit->journaliser($request->user(), "Modification du dossier #{$dossier->numero}", $dossier);
 
-        return redirect()->route('dossiers.show', $dossier->numero)->with('message', 'Dossier mis à jour.');
+        return redirect()->route('dossiers.show', $dossier->numero)->with('message', __('app.messages.dossier_mis_a_jour'));
     }
 
     public function statut(DossierStatutRequest $request, string $numero): RedirectResponse
     {
         $dossier = $this->dossiers->changerStatut($this->dossier($numero), $request->enum('statut', DossierStatut::class), $request->user());
 
-        return redirect()->route('dossiers.show', $dossier->numero)->with('message', 'Statut mis à jour.');
+        return redirect()->route('dossiers.show', $dossier->numero)->with('message', __('app.messages.statut_mis_a_jour'));
     }
 
     public function blocage(DossierBlocageRequest $request, string $numero): RedirectResponse
@@ -122,7 +146,7 @@ class DossierController extends Controller
             ? $this->dossiers->bloquer($dossier, (string) $request->input('raison'), $request->user())
             : $this->dossiers->debloquer($dossier, $request->user());
 
-        return redirect()->route('dossiers.show', $dossier->numero)->with('message', $request->boolean('bloque') ? 'Dossier bloqué.' : 'Dossier débloqué.');
+        return redirect()->route('dossiers.show', $dossier->numero)->with('message', $request->boolean('bloque') ? __('app.messages.dossier_bloque') : __('app.messages.dossier_debloque'));
     }
 
     public function destroy(Request $request, string $numero): RedirectResponse
@@ -132,7 +156,7 @@ class DossierController extends Controller
 
         $this->audit->journaliser($request->user(), "Suppression (logique) du dossier #{$dossier->numero}", $dossier);
 
-        return redirect()->route('dossiers.index')->with('message', 'Dossier supprimé.');
+        return redirect()->route('dossiers.index')->with('message', __('app.messages.dossier_supprime'));
     }
 
     private function dossier(string $numero): Dossier

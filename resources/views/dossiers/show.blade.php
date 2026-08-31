@@ -24,6 +24,7 @@
                 </form>
             @endunless
             <a class="btn secondary small" href="{{ route('dossiers.edit', $dossier->numero) }}">{{ __('app.commun.modifier') }}</a>
+            <a class="btn small" href="{{ route('dossiers.pdf', $dossier->numero) }}">🖨 {{ __('app.commun.pdf') }}</a>
         </div>
     </div>
 

@@ -16,6 +16,7 @@
                 </select>
                 <button type="submit" class="btn small">↪ {{ __('app.commun.statut') }}</button>
             </form>
+            <a class="btn small" href="{{ route('documents-commerciaux.pdf', $document) }}">🖨 {{ __('app.commun.pdf') }}</a>
             <a class="btn secondary small" href="{{ route('documents-commerciaux.index') }}">← {{ __('app.commun.retour') }}</a>
         </div>
     </div>

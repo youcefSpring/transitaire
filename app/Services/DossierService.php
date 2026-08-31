@@ -18,13 +18,19 @@ class DossierService
     {
         if ($dossier->bloque) {
             throw ValidationException::withMessages([
-                'statut' => "Le dossier {$dossier->numero} est bloqué : {$dossier->raison_blocage}.",
+                'statut' => __('app.messages.dossier_bloque_erreur', [
+                    'numero' => $dossier->numero,
+                    'raison' => $dossier->raison_blocage,
+                ]),
             ]);
         }
 
         if ($this->transitionSuivante($dossier->statut) !== $cible) {
             throw ValidationException::withMessages([
-                'statut' => "Transition {$dossier->statut->value} → {$cible->value} non autorisée (§2).",
+                'statut' => __('app.messages.transition_non_autorisee', [
+                    'de' => __("app.statut.{$dossier->statut->value}"),
+                    'vers' => __("app.statut.{$cible->value}"),
+                ]),
             ]);
         }
 
@@ -47,7 +53,7 @@ class DossierService
 
         if ($raison === '') {
             throw ValidationException::withMessages([
-                'raison_blocage' => 'La raison du blocage est obligatoire (§2).',
+                'raison_blocage' => __('app.messages.raison_blocage_requise'),
             ]);
         }
 

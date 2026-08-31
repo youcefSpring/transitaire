@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserProfile;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
-use App\Enums\UserProfile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -41,7 +41,7 @@ class UserController extends Controller
     {
         User::create($request->validated());
 
-        return redirect()->route('users.index')->with('message', 'Utilisateur créé.');
+        return redirect()->route('users.index')->with('message', __('app.messages.utilisateur_cree'));
     }
 
     public function edit(User $user): View
@@ -57,13 +57,13 @@ class UserController extends Controller
             $user->update(['password' => $request->input('password')]);
         }
 
-        return redirect()->route('users.index')->with('message', 'Utilisateur mis à jour.');
+        return redirect()->route('users.index')->with('message', __('app.messages.utilisateur_mis_a_jour'));
     }
 
     public function destroy(User $user): RedirectResponse
     {
         $user->delete();
 
-        return redirect()->route('users.index')->with('message', 'Utilisateur supprimé.');
+        return redirect()->route('users.index')->with('message', __('app.messages.utilisateur_supprime'));
     }
 }

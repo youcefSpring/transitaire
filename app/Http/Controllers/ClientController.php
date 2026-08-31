@@ -50,7 +50,7 @@ class ClientController extends Controller
 
         $this->audit->journaliser($request->user(), "Création du client {$client->raison_sociale}", null, 'client', $client->id);
 
-        return redirect()->route('clients.show', $client)->with('message', 'Client créé.');
+        return redirect()->route('clients.show', $client)->with('message', __('app.messages.client_cree'));
     }
 
     public function show(Client $client): View
@@ -79,7 +79,7 @@ class ClientController extends Controller
             }
         }
 
-        return redirect()->route('clients.show', $client)->with('message', 'Client mis à jour.');
+        return redirect()->route('clients.show', $client)->with('message', __('app.messages.client_mis_a_jour'));
     }
 
     public function destroy(Request $request, Client $client): RedirectResponse
@@ -88,6 +88,6 @@ class ClientController extends Controller
 
         $this->audit->journaliser($request->user(), "Suppression (logique) du client {$client->raison_sociale}", null, 'client', $client->id);
 
-        return redirect()->route('clients.index')->with('message', 'Client supprimé.');
+        return redirect()->route('clients.index')->with('message', __('app.messages.client_supprime'));
     }
 }

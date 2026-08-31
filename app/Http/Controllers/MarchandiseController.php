@@ -13,21 +13,21 @@ class MarchandiseController extends Controller
     {
         $this->dossier($numero)->marchandises()->create($request->validated());
 
-        return redirect()->route('dossiers.show', $numero)->with('message', 'Marchandise ajoutée.');
+        return redirect()->route('dossiers.show', $numero)->with('message', __('app.messages.marchandise_ajoutee'));
     }
 
     public function update(MarchandiseStoreRequest $request, string $numero, Marchandise $marchandise): RedirectResponse
     {
         $marchandise->update($request->validated());
 
-        return redirect()->route('dossiers.show', $numero)->with('message', 'Marchandise mise à jour.');
+        return redirect()->route('dossiers.show', $numero)->with('message', __('app.messages.marchandise_mise_a_jour'));
     }
 
     public function destroy(string $numero, Marchandise $marchandise): RedirectResponse
     {
         $marchandise->delete();
 
-        return redirect()->route('dossiers.show', $numero)->with('message', 'Marchandise supprimée.');
+        return redirect()->route('dossiers.show', $numero)->with('message', __('app.messages.marchandise_supprimee'));
     }
 
     private function dossier(string $numero): Dossier
