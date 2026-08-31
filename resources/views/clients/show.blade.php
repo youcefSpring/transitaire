@@ -6,7 +6,9 @@
     <div class="page-head">
         <h1>{{ $client->raison_sociale }}</h1>
         <div class="actions">
-            <a class="btn secondary small" href="{{ route('clients.edit', $client) }}">{{ __('app.commun.modifier') }}</a>
+            @can('clients.gerer')
+                <a class="btn secondary small" href="{{ route('clients.edit', $client) }}">{{ __('app.commun.modifier') }}</a>
+            @endcan
             <a class="btn secondary small" href="{{ route('clients.index') }}"><span class="fl">←</span> {{ __('app.commun.retour') }}</a>
         </div>
     </div>
@@ -49,18 +51,20 @@
 
         <div class="card">
             <h2>{{ __('app.clients.documents_administratifs') }}</h2>
-            <form class="inline-form" method="POST" action="{{ route('clients.documents', $client) }}" enctype="multipart/form-data" style="margin-block-end:12px">
-                @csrf
-                <div class="field"><label>{{ __('app.commun.type') }}</label>
-                    <select name="categorie">
-                        @foreach (\App\Enums\DocumentCategorie::cases() as $categorie)
-                            <option value="{{ $categorie->value }}">{{ __("app.document_categorie.{$categorie->value}") }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="field"><label>{{ __('app.dossiers.televerser') }}</label><input type="file" name="fichier" required></div>
-                <button class="btn small" type="submit">⬆ {{ __('app.dossiers.televerser') }}</button>
-            </form>
+            @can('clients.gerer')
+                <form class="inline-form" method="POST" action="{{ route('clients.documents', $client) }}" enctype="multipart/form-data" style="margin-block-end:12px">
+                    @csrf
+                    <div class="field"><label>{{ __('app.commun.type') }}</label>
+                        <select name="categorie">
+                            @foreach (\App\Enums\DocumentCategorie::cases() as $categorie)
+                                <option value="{{ $categorie->value }}">{{ __("app.document_categorie.{$categorie->value}") }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="field"><label>{{ __('app.dossiers.televerser') }}</label><input type="file" name="fichier" required></div>
+                    <button class="btn small" type="submit">⬆ {{ __('app.dossiers.televerser') }}</button>
+                </form>
+            @endcan
             <div class="table-wrap">
                 <table>
                     <thead><tr><th>{{ __('app.commun.nom') }}</th><th>{{ __('app.commun.type') }}</th><th>{{ __('app.commun.date') }}</th><th class="amount">{{ __('app.commun.actions') }}</th></tr></thead>

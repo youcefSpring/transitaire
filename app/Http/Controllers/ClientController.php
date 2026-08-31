@@ -79,6 +79,8 @@ class ClientController extends Controller
             }
         }
 
+        $this->audit->journaliser($request->user(), "Modification du client {$client->raison_sociale}", null, 'client', $client->id);
+
         return redirect()->route('clients.show', $client)->with('message', __('app.messages.client_mis_a_jour'));
     }
 

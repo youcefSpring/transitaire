@@ -115,6 +115,7 @@ return [
         'suppression_facture_interdite' => 'Un agent de transit ne peut pas supprimer une facture.',
         'rapport_introuvable' => 'Type de rapport introuvable.',
         'categorie_frais_invalide' => 'Catégorie invalide pour ce sens de frais.',
+        'acces_refuse' => 'Accès refusé : votre profil ne permet pas d\'effectuer cette action.',
     ],
 
     'pdf' => [
@@ -418,10 +419,18 @@ return [
     ],
 
     'alertes' => [
-        'titre' => 'Alertes & échéances',
+        'titre' => 'Alertes',
         'message' => 'Message',
         'marquer_lue' => 'Marquer lue',
         'marquer_traitee' => 'Marquer traitée',
+    ],
+
+    'notifications' => [
+        'titre' => 'File de notifications',
+        'canal' => 'Canal',
+        'destinataire' => 'Destinataire',
+        'sujet' => 'Objet',
+        'envoyee_le' => 'Envoyée le',
     ],
 
     'rapports' => [

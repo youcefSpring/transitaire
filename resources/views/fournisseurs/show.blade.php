@@ -6,7 +6,9 @@
     <div class="page-head">
         <h1>{{ $fournisseur->nom }} <span class="badge info">{{ __("app.fournisseur_type.{$fournisseur->type->value}") }}</span></h1>
         <div class="actions">
-            <a class="btn secondary small" href="{{ route('fournisseurs.edit', $fournisseur) }}">{{ __('app.commun.modifier') }}</a>
+            @can('fournisseurs.gerer')
+                <a class="btn secondary small" href="{{ route('fournisseurs.edit', $fournisseur) }}">{{ __('app.commun.modifier') }}</a>
+            @endcan
             <a class="btn secondary small" href="{{ route('fournisseurs.index') }}"><span class="fl">←</span> {{ __('app.commun.retour') }}</a>
         </div>
     </div>

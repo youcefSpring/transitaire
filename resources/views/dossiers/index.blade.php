@@ -5,7 +5,11 @@
 @section('content')
     <div class="page-head">
         <h1>{{ __('app.dossiers.titre') }}</h1>
-        <div class="actions"><a class="btn" href="{{ route('dossiers.create') }}">＋ {{ __('app.dossiers.nouveau') }}</a></div>
+        <div class="actions">
+            @can('dossiers.gerer')
+                <a class="btn" href="{{ route('dossiers.create') }}">＋ {{ __('app.dossiers.nouveau') }}</a>
+            @endcan
+        </div>
     </div>
 
     <div class="card">
@@ -62,7 +66,18 @@
                 </thead>
                 <tbody>
                 @forelse ($dossiers as $dossier)
-                    <tr>
+                    @php
+                        $classeLigne = $dossier->bloque
+                            ? 'rstat-danger'
+                            : match ($dossier->statut->value) {
+                                'nouveau', 'documents_recus' => 'rstat-neutre',
+                                'en_cours', 'livraison' => 'rstat-info',
+                                'dedouanement' => 'rstat-alerte',
+                                'douane_terminee', 'cloture' => 'rstat-succes',
+                                default => '',
+                            };
+                    @endphp
+                    <tr class="{{ $classeLigne }}">
                         <td><a class="mono" href="{{ route('dossiers.show', $dossier->numero) }}">{{ $dossier->numero }}</a></td>
                         <td>{{ $dossier->client?->raison_sociale }}</td>
                         <td>{{ __("app.type_operation.{$dossier->type->value}") }}</td>

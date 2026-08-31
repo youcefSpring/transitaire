@@ -115,6 +115,7 @@ return [
         'suppression_facture_interdite' => 'لا يمكن لوكيل الترانزيت حذف فاتورة.',
         'rapport_introuvable' => 'نوع التقرير غير موجود.',
         'categorie_frais_invalide' => 'فئة غير صالحة لهذا الاتجاه من المصاريف.',
+        'acces_refuse' => 'الوصول مرفوض: صفتك الحالية لا تسمح بتنفيذ هذه العملية.',
     ],
 
     'pdf' => [
@@ -418,10 +419,18 @@ return [
     ],
 
     'alertes' => [
-        'titre' => 'التنبيهات والمواعيد',
+        'titre' => 'التنبيهات',
         'message' => 'الرسالة',
-        'marquer_lue' => 'تعيين كمقروءة',
-        'marquer_traitee' => 'تعيين كمعالجة',
+        'marquer_lue' => 'وضع علامة مقروء',
+        'marquer_traitee' => 'وضع علامة مُعالَج',
+    ],
+
+    'notifications' => [
+        'titre' => 'قائمة الإشعارات',
+        'canal' => 'القناة',
+        'destinataire' => 'المستلم',
+        'sujet' => 'الموضوع',
+        'envoyee_le' => 'أُرسلت في',
     ],
 
     'rapports' => [

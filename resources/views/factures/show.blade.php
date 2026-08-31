@@ -6,16 +6,18 @@
     <div class="page-head">
         <h1><span class="mono">{{ $document->numero }}</span> <span class="badge primary">{{ __("app.dc_type.{$document->type->value}") }}</span></h1>
         <div class="actions no-print">
-            <form method="POST" action="{{ route('documents-commerciaux.statut', $document) }}" style="display:inline-flex;gap:6px">
-                @csrf
-                @method('PATCH')
-                <select name="statut">
-                    @foreach (\App\Enums\DocumentCommercialStatut::cases() as $statut)
-                        <option value="{{ $statut->value }}" {{ $document->statut === $statut ? 'selected' : '' }}>{{ __("app.dc_statut.{$statut->value}") }}</option>
-                    @endforeach
-                </select>
-                <button type="submit" class="btn small"><span class="fl">↪</span> {{ __('app.commun.statut') }}</button>
-            </form>
+            @can('documents-commerciaux.gerer')
+                <form method="POST" action="{{ route('documents-commerciaux.statut', $document) }}" style="display:inline-flex;gap:6px">
+                    @csrf
+                    @method('PATCH')
+                    <select name="statut">
+                        @foreach (\App\Enums\DocumentCommercialStatut::cases() as $statut)
+                            <option value="{{ $statut->value }}" {{ $document->statut === $statut ? 'selected' : '' }}>{{ __("app.dc_statut.{$statut->value}") }}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="btn small"><span class="fl">↪</span> {{ __('app.commun.statut') }}</button>
+                </form>
+            @endcan
             <a class="btn small" href="{{ route('documents-commerciaux.pdf', $document) }}">🖨 {{ __('app.commun.pdf') }}</a>
             <a class="btn secondary small" href="{{ route('documents-commerciaux.index') }}"><span class="fl">←</span> {{ __('app.commun.retour') }}</a>
         </div>

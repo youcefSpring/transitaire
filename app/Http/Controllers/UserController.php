@@ -6,12 +6,17 @@ use App\Enums\UserProfile;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
+use App\Services\AuditService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private readonly AuditService $audit,
+    ) {}
+
     public function index(Request $request): View
     {
         $users = User::query()
@@ -39,7 +44,9 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request): RedirectResponse
     {
-        User::create($request->validated());
+        $user = User::create($request->validated());
+
+        $this->audit->journaliser($request->user(), "Création de l'utilisateur {$user->name} ({$user->email})", null, 'user', $user->id);
 
         return redirect()->route('users.index')->with('message', __('app.messages.utilisateur_cree'));
     }
@@ -57,12 +64,16 @@ class UserController extends Controller
             $user->update(['password' => $request->input('password')]);
         }
 
+        $this->audit->journaliser($request->user(), "Modification de l'utilisateur {$user->name} ({$user->email})", null, 'user', $user->id);
+
         return redirect()->route('users.index')->with('message', __('app.messages.utilisateur_mis_a_jour'));
     }
 
     public function destroy(User $user): RedirectResponse
     {
         $user->delete();
+
+        $this->audit->journaliser(auth()->user(), "Suppression de l'utilisateur {$user->name} ({$user->email})", null, 'user', $user->id);
 
         return redirect()->route('users.index')->with('message', __('app.messages.utilisateur_supprime'));
     }

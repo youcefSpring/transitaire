@@ -11,12 +11,17 @@ use App\Models\Chauffeur;
 use App\Models\Dossier;
 use App\Models\Fournisseur;
 use App\Models\Livraison;
+use App\Services\AuditService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class LivraisonController extends Controller
 {
+    public function __construct(
+        private readonly AuditService $audit,
+    ) {}
+
     public function camionsIndex(Request $request): View
     {
         $camions = Camion::query()
@@ -36,7 +41,9 @@ class LivraisonController extends Controller
             'notes' => ['nullable', 'string'],
         ]);
 
-        Camion::create($donnees);
+        $camion = Camion::create($donnees);
+
+        $this->audit->journaliser($request->user(), "Enregistrement du camion {$camion->immatriculation}", null, 'camion', $camion->id);
 
         return back()->with('message', __('app.messages.camion_enregistre'));
     }
@@ -44,6 +51,8 @@ class LivraisonController extends Controller
     public function camionsDestroy(Camion $camion): RedirectResponse
     {
         $camion->delete();
+
+        $this->audit->journaliser(auth()->user(), "Suppression (logique) du camion {$camion->immatriculation}", null, 'camion', $camion->id);
 
         return back()->with('message', __('app.messages.camion_supprime'));
     }
@@ -68,7 +77,9 @@ class LivraisonController extends Controller
             'telephone' => ['required', 'string', 'max:20'],
         ]);
 
-        Chauffeur::create($donnees);
+        $chauffeur = Chauffeur::create($donnees);
+
+        $this->audit->journaliser($request->user(), "Enregistrement du chauffeur {$chauffeur->nom}", null, 'chauffeur', $chauffeur->id);
 
         return back()->with('message', __('app.messages.chauffeur_enregistre'));
     }
@@ -76,6 +87,8 @@ class LivraisonController extends Controller
     public function chauffeursDestroy(Chauffeur $chauffeur): RedirectResponse
     {
         $chauffeur->delete();
+
+        $this->audit->journaliser(auth()->user(), "Suppression (logique) du chauffeur {$chauffeur->nom}", null, 'chauffeur', $chauffeur->id);
 
         return back()->with('message', __('app.messages.chauffeur_supprime'));
     }
@@ -104,7 +117,15 @@ class LivraisonController extends Controller
 
     public function store(LivraisonStoreRequest $request): RedirectResponse
     {
-        Livraison::create($request->validated());
+        $livraison = Livraison::create($request->validated());
+
+        $this->audit->journaliser(
+            $request->user(),
+            "Planification de la livraison vers {$livraison->destination} le {$livraison->date_heure_chargement->format('d/m/Y H:i')}",
+            $livraison->dossier,
+            'livraison',
+            $livraison->id,
+        );
 
         return redirect()->route('livraisons.index')->with('message', __('app.messages.livraison_planifiee'));
     }
@@ -113,12 +134,22 @@ class LivraisonController extends Controller
     {
         $livraison->update(['statut' => $request->enum('statut', LivraisonStatut::class)]);
 
+        $this->audit->journaliser(
+            $request->user(),
+            "Passage de la livraison #{$livraison->id} au statut {$livraison->statut->value}",
+            $livraison->dossier,
+            'livraison',
+            $livraison->id,
+        );
+
         return back()->with('message', __('app.messages.statut_livraison_mis_a_jour'));
     }
 
     public function destroy(Livraison $livraison): RedirectResponse
     {
         $livraison->delete();
+
+        $this->audit->journaliser(auth()->user(), "Suppression (logique) de la livraison #{$livraison->id}", $livraison->dossier, 'livraison', $livraison->id);
 
         return redirect()->route('livraisons.index')->with('message', __('app.messages.livraison_supprimee'));
     }

@@ -11,6 +11,7 @@
         </div>
     </div>
 
+    @can('transport.gerer')
     <div class="card no-print">
         <h2>{{ __('app.transport.nouvelle_livraison') }}</h2>
         <form method="POST" action="{{ route('livraisons.store') }}">
@@ -62,6 +63,7 @@
             <button type="submit" class="btn" style="margin-block-start:14px">{{ __('app.commun.enregistrer') }}</button>
         </form>
     </div>
+    @endcan
 
     <div class="card">
         <x-filtres :action="route('livraisons.index')" :paginateur="$livraisons">
@@ -84,7 +86,15 @@
                 <thead><tr><th>{{ __('app.commun.dossier') }}</th><th>{{ __('app.transport.chargement') }}</th><th>{{ __('app.transport.destination') }}</th><th>{{ __('app.transport.camion_ou_transporteur') }}</th><th>{{ __('app.transport.chauffeurs') }}</th><th>{{ __('app.commun.statut') }}</th><th>{{ __('app.transport.frais_transport') }}</th><th class="amount">{{ __('app.commun.actions') }}</th></tr></thead>
                 <tbody>
                 @forelse ($livraisons as $livraison)
-                    <tr>
+                    @php
+                        $classeLigne = match ($livraison->statut->value) {
+                            'planifiee' => 'rstat-info',
+                            'en_cours' => 'rstat-alerte',
+                            'livree' => 'rstat-succes',
+                            default => '',
+                        };
+                    @endphp
+                    <tr class="{{ $classeLigne }}">
                         <td><a class="mono" href="{{ route('dossiers.show', $livraison->dossier?->numero) }}">{{ $livraison->dossier?->numero }}</a></td>
                         <td class="mono">{{ $livraison->date_heure_chargement->format('d/m/Y H:i') }}</td>
                         <td>{{ $livraison->destination }}</td>
@@ -94,19 +104,21 @@
                         <td class="mono">{{ $livraison->frais_transport }}</td>
                         <td>
                             <div class="row-actions no-print">
-                                @unless ($livraison->statut === \App\Enums\LivraisonStatut::Livree)
-                                    <form method="POST" action="{{ route('livraisons.statut', $livraison) }}">
+                                @can('transport.gerer')
+                                    @unless ($livraison->statut === \App\Enums\LivraisonStatut::Livree)
+                                        <form method="POST" action="{{ route('livraisons.statut', $livraison) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="statut" value="{{ $livraison->statut === \App\Enums\LivraisonStatut::Planifiee ? 'en_cours' : 'livree' }}">
+                                            <button type="submit" class="btn secondary small"><span class="fl">↪</span></button>
+                                        </form>
+                                    @endunless
+                                    <form method="POST" action="{{ route('livraisons.destroy', $livraison) }}" onsubmit="return confirm('{{ __('app.commun.confirmer') }}')">
                                         @csrf
-                                        @method('PATCH')
-                                        <input type="hidden" name="statut" value="{{ $livraison->statut === \App\Enums\LivraisonStatut::Planifiee ? 'en_cours' : 'livree' }}">
-                                        <button type="submit" class="btn secondary small"><span class="fl">↪</span></button>
+                                        @method('DELETE')
+                                        <button type="submit" class="btn danger small">✕</button>
                                     </form>
-                                @endunless
-                                <form method="POST" action="{{ route('livraisons.destroy', $livraison) }}" onsubmit="return confirm('{{ __('app.commun.confirmer') }}')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn danger small">✕</button>
-                                </form>
+                                @endcan
                             </div>
                         </td>
                     </tr>

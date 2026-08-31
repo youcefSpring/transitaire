@@ -7,6 +7,7 @@
         <h1>{{ __('app.paiements.titre') }}</h1>
     </div>
 
+    @can('paiements.gerer')
     <div class="card no-print">
         <h2>{{ __('app.paiements.nouveau') }}</h2>
         <form method="POST" action="{{ route('paiements.store') }}">
@@ -104,4 +105,5 @@
         </div>
         {{ $paiements->links() }}
     </div>
+    @endcan
 @endsection

@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ConteneurStoreRequest;
-use App\Http\Requests\ConteneurUpdateRequest;
-use App\Models\Client;
 use App\Models\Conteneur;
-use App\Models\Dossier;
+use App\Services\AuditService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ConteneurController extends Controller
 {
+    public function __construct(
+        private readonly AuditService $audit,
+    ) {}
+
     public function index(Request $request): View
     {
         $conteneurs = Conteneur::query()
@@ -36,7 +38,9 @@ class ConteneurController extends Controller
 
     public function store(ConteneurStoreRequest $request): RedirectResponse
     {
-        Conteneur::create($request->validated());
+        $conteneur = Conteneur::create($request->validated());
+
+        $this->audit->journaliser($request->user(), "Enregistrement du conteneur {$conteneur->numero}", $conteneur->dossier, 'conteneur', $conteneur->id);
 
         return redirect()->route('conteneurs.index')->with('message', __('app.messages.conteneur_enregistre'));
     }
@@ -45,12 +49,16 @@ class ConteneurController extends Controller
     {
         $conteneur->update($request->validated());
 
+        $this->audit->journaliser($request->user(), "Modification du conteneur {$conteneur->numero}", $conteneur->dossier, 'conteneur', $conteneur->id);
+
         return redirect()->route('conteneurs.index')->with('message', __('app.messages.conteneur_mis_a_jour'));
     }
 
     public function destroy(Conteneur $conteneur): RedirectResponse
     {
         $conteneur->delete();
+
+        $this->audit->journaliser(auth()->user(), "Suppression (logique) du conteneur {$conteneur->numero}", $conteneur->dossier, 'conteneur', $conteneur->id);
 
         return redirect()->route('conteneurs.index')->with('message', __('app.messages.conteneur_supprime'));
     }

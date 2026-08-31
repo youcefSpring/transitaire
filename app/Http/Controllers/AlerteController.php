@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Enums\AlerteStatut;
 use App\Models\Alerte;
+use App\Models\Notification;
+use App\Services\AuditService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class AlerteController extends Controller
 {
+    public function __construct(
+        private readonly AuditService $audit,
+    ) {}
+
     public function index(Request $request): View
     {
         $alertes = Alerte::query()
@@ -22,7 +28,10 @@ class AlerteController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('alertes.index', compact('alertes'));
+        return view('alertes.index', [
+            'alertes' => $alertes,
+            'notifications' => Notification::query()->latest('id')->limit(10)->get(),
+        ]);
     }
 
     public function update(Request $request, Alerte $alerte): RedirectResponse
@@ -35,6 +44,14 @@ class AlerteController extends Controller
         ]);
 
         $alerte->update($donnees);
+
+        $this->audit->journaliser(
+            $request->user(),
+            "Alerte « {$alerte->type->value} » passée au statut {$alerte->statut->value}",
+            $alerte->dossier,
+            'alerte',
+            $alerte->id,
+        );
 
         return back()->with('message', __('app.messages.alerte_mise_a_jour'));
     }

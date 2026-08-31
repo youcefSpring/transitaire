@@ -37,71 +37,71 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
-    Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
-    Route::post('/clients', [ClientController::class, 'store'])->name('clients.store');
+    Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create')->middleware('can:clients.gerer');
+    Route::post('/clients', [ClientController::class, 'store'])->name('clients.store')->middleware('can:clients.gerer');
     Route::get('/clients/{client}', [ClientController::class, 'show'])->name('clients.show');
-    Route::get('/clients/{client}/edit', [ClientController::class, 'edit'])->name('clients.edit');
-    Route::put('/clients/{client}', [ClientController::class, 'update'])->name('clients.update');
-    Route::delete('/clients/{client}', [ClientController::class, 'destroy'])->name('clients.destroy');
-    Route::post('/clients/{client}/documents', [DocumentController::class, 'storeClient'])->name('clients.documents');
+    Route::get('/clients/{client}/edit', [ClientController::class, 'edit'])->name('clients.edit')->middleware('can:clients.gerer');
+    Route::put('/clients/{client}', [ClientController::class, 'update'])->name('clients.update')->middleware('can:clients.gerer');
+    Route::delete('/clients/{client}', [ClientController::class, 'destroy'])->name('clients.destroy')->middleware('can:clients.supprimer');
+    Route::post('/clients/{client}/documents', [DocumentController::class, 'storeClient'])->name('clients.documents')->middleware('can:clients.gerer');
 
     Route::get('/dossiers', [DossierController::class, 'index'])->name('dossiers.index');
-    Route::get('/dossiers/create', [DossierController::class, 'create'])->name('dossiers.create');
-    Route::post('/dossiers', [DossierController::class, 'store'])->name('dossiers.store');
+    Route::get('/dossiers/create', [DossierController::class, 'create'])->name('dossiers.create')->middleware('can:dossiers.gerer');
+    Route::post('/dossiers', [DossierController::class, 'store'])->name('dossiers.store')->middleware('can:dossiers.gerer');
     Route::get('/dossiers/{numero}', [DossierController::class, 'show'])->name('dossiers.show');
-    Route::get('/dossiers/{numero}/edit', [DossierController::class, 'edit'])->name('dossiers.edit');
+    Route::get('/dossiers/{numero}/edit', [DossierController::class, 'edit'])->name('dossiers.edit')->middleware('can:dossiers.gerer');
     Route::get('/dossiers/{numero}/pdf', [DossierController::class, 'pdf'])->name('dossiers.pdf');
-    Route::put('/dossiers/{numero}', [DossierController::class, 'update'])->name('dossiers.update');
-    Route::patch('/dossiers/{numero}/statut', [DossierController::class, 'statut'])->name('dossiers.statut');
-    Route::patch('/dossiers/{numero}/blocage', [DossierController::class, 'blocage'])->name('dossiers.blocage');
-    Route::delete('/dossiers/{numero}', [DossierController::class, 'destroy'])->name('dossiers.destroy');
+    Route::put('/dossiers/{numero}', [DossierController::class, 'update'])->name('dossiers.update')->middleware('can:dossiers.gerer');
+    Route::patch('/dossiers/{numero}/statut', [DossierController::class, 'statut'])->name('dossiers.statut')->middleware('can:dossiers.gerer');
+    Route::patch('/dossiers/{numero}/blocage', [DossierController::class, 'blocage'])->name('dossiers.blocage')->middleware('can:dossiers.gerer');
+    Route::delete('/dossiers/{numero}', [DossierController::class, 'destroy'])->name('dossiers.destroy')->middleware('can:dossiers.supprimer');
 
-    Route::post('/dossiers/{numero}/marchandises', [MarchandiseController::class, 'store'])->name('dossiers.marchandises');
-    Route::put('/dossiers/{numero}/marchandises/{marchandise}', [MarchandiseController::class, 'update'])->name('marchandises.update');
-    Route::delete('/dossiers/{numero}/marchandises/{marchandise}', [MarchandiseController::class, 'destroy'])->name('marchandises.destroy');
+    Route::post('/dossiers/{numero}/marchandises', [MarchandiseController::class, 'store'])->name('dossiers.marchandises')->middleware('can:dossiers.gerer');
+    Route::put('/dossiers/{numero}/marchandises/{marchandise}', [MarchandiseController::class, 'update'])->name('marchandises.update')->middleware('can:dossiers.gerer');
+    Route::delete('/dossiers/{numero}/marchandises/{marchandise}', [MarchandiseController::class, 'destroy'])->name('marchandises.destroy')->middleware('can:dossiers.gerer');
 
-    Route::post('/dossiers/{numero}/documents', [DocumentController::class, 'storeDossier'])->name('dossiers.documents');
-    Route::post('/dossiers/{numero}/douane', [DedouanementController::class, 'store'])->name('dossiers.douane');
-    Route::post('/dossiers/{numero}/frais', [FraisController::class, 'store'])->name('dossiers.frais');
-    Route::delete('/frais/{frai}', [FraisController::class, 'destroy'])->name('frais.destroy');
+    Route::post('/dossiers/{numero}/documents', [DocumentController::class, 'storeDossier'])->name('dossiers.documents')->middleware('can:dossiers.gerer');
+    Route::post('/dossiers/{numero}/douane', [DedouanementController::class, 'store'])->name('dossiers.douane')->middleware('can:dossiers.gerer');
+    Route::post('/dossiers/{numero}/frais', [FraisController::class, 'store'])->name('dossiers.frais')->middleware('can:frais.gerer');
+    Route::delete('/frais/{frai}', [FraisController::class, 'destroy'])->name('frais.destroy')->middleware('can:frais.gerer');
 
     Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
-    Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
+    Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy')->middleware('can:dossiers.gerer');
 
     Route::get('/conteneurs', [ConteneurController::class, 'index'])->name('conteneurs.index');
-    Route::post('/conteneurs', [ConteneurController::class, 'store'])->name('conteneurs.store');
-    Route::put('/conteneurs/{conteneur}', [ConteneurController::class, 'update'])->name('conteneurs.update');
-    Route::delete('/conteneurs/{conteneur}', [ConteneurController::class, 'destroy'])->name('conteneurs.destroy');
+    Route::post('/conteneurs', [ConteneurController::class, 'store'])->name('conteneurs.store')->middleware('can:dossiers.gerer');
+    Route::put('/conteneurs/{conteneur}', [ConteneurController::class, 'update'])->name('conteneurs.update')->middleware('can:dossiers.gerer');
+    Route::delete('/conteneurs/{conteneur}', [ConteneurController::class, 'destroy'])->name('conteneurs.destroy')->middleware('can:dossiers.gerer');
 
     Route::get('/documents-commerciaux', [DocumentCommercialController::class, 'index'])->name('documents-commerciaux.index');
-    Route::get('/documents-commerciaux/create', [DocumentCommercialController::class, 'create'])->name('documents-commerciaux.create');
-    Route::post('/documents-commerciaux', [DocumentCommercialController::class, 'store'])->name('documents-commerciaux.store');
+    Route::get('/documents-commerciaux/create', [DocumentCommercialController::class, 'create'])->name('documents-commerciaux.create')->middleware('can:documents-commerciaux.gerer');
+    Route::post('/documents-commerciaux', [DocumentCommercialController::class, 'store'])->name('documents-commerciaux.store')->middleware('can:documents-commerciaux.gerer');
     Route::get('/documents-commerciaux/{documentCommercial}', [DocumentCommercialController::class, 'show'])->name('documents-commerciaux.show');
     Route::get('/documents-commerciaux/{documentCommercial}/pdf', [DocumentCommercialController::class, 'pdf'])->name('documents-commerciaux.pdf');
-    Route::patch('/documents-commerciaux/{documentCommercial}/statut', [DocumentCommercialController::class, 'statut'])->name('documents-commerciaux.statut');
-    Route::delete('/documents-commerciaux/{documentCommercial}', [DocumentCommercialController::class, 'destroy'])->name('documents-commerciaux.destroy');
+    Route::patch('/documents-commerciaux/{documentCommercial}/statut', [DocumentCommercialController::class, 'statut'])->name('documents-commerciaux.statut')->middleware('can:documents-commerciaux.gerer');
+    Route::delete('/documents-commerciaux/{documentCommercial}', [DocumentCommercialController::class, 'destroy'])->name('documents-commerciaux.destroy')->middleware('can:documents-commerciaux.supprimer');
 
     Route::get('/paiements', [PaiementController::class, 'index'])->name('paiements.index');
-    Route::post('/paiements', [PaiementController::class, 'store'])->name('paiements.store');
+    Route::post('/paiements', [PaiementController::class, 'store'])->name('paiements.store')->middleware('can:paiements.gerer');
 
     Route::get('/fournisseurs', [FournisseurController::class, 'index'])->name('fournisseurs.index');
-    Route::get('/fournisseurs/create', [FournisseurController::class, 'create'])->name('fournisseurs.create');
-    Route::post('/fournisseurs', [FournisseurController::class, 'store'])->name('fournisseurs.store');
+    Route::get('/fournisseurs/create', [FournisseurController::class, 'create'])->name('fournisseurs.create')->middleware('can:fournisseurs.gerer');
+    Route::post('/fournisseurs', [FournisseurController::class, 'store'])->name('fournisseurs.store')->middleware('can:fournisseurs.gerer');
     Route::get('/fournisseurs/{fournisseur}', [FournisseurController::class, 'show'])->name('fournisseurs.show');
-    Route::get('/fournisseurs/{fournisseur}/edit', [FournisseurController::class, 'edit'])->name('fournisseurs.edit');
-    Route::put('/fournisseurs/{fournisseur}', [FournisseurController::class, 'update'])->name('fournisseurs.update');
-    Route::delete('/fournisseurs/{fournisseur}', [FournisseurController::class, 'destroy'])->name('fournisseurs.destroy');
+    Route::get('/fournisseurs/{fournisseur}/edit', [FournisseurController::class, 'edit'])->name('fournisseurs.edit')->middleware('can:fournisseurs.gerer');
+    Route::put('/fournisseurs/{fournisseur}', [FournisseurController::class, 'update'])->name('fournisseurs.update')->middleware('can:fournisseurs.gerer');
+    Route::delete('/fournisseurs/{fournisseur}', [FournisseurController::class, 'destroy'])->name('fournisseurs.destroy')->middleware('can:fournisseurs.gerer');
 
     Route::get('/transport/camions', [LivraisonController::class, 'camionsIndex'])->name('camions.index');
-    Route::post('/transport/camions', [LivraisonController::class, 'camionsStore'])->name('camions.store');
-    Route::delete('/transport/camions/{camion}', [LivraisonController::class, 'camionsDestroy'])->name('camions.destroy');
+    Route::post('/transport/camions', [LivraisonController::class, 'camionsStore'])->name('camions.store')->middleware('can:transport.gerer');
+    Route::delete('/transport/camions/{camion}', [LivraisonController::class, 'camionsDestroy'])->name('camions.destroy')->middleware('can:transport.gerer');
     Route::get('/transport/chauffeurs', [LivraisonController::class, 'chauffeursIndex'])->name('chauffeurs.index');
-    Route::post('/transport/chauffeurs', [LivraisonController::class, 'chauffeursStore'])->name('chauffeurs.store');
-    Route::delete('/transport/chauffeurs/{chauffeur}', [LivraisonController::class, 'chauffeursDestroy'])->name('chauffeurs.destroy');
+    Route::post('/transport/chauffeurs', [LivraisonController::class, 'chauffeursStore'])->name('chauffeurs.store')->middleware('can:transport.gerer');
+    Route::delete('/transport/chauffeurs/{chauffeur}', [LivraisonController::class, 'chauffeursDestroy'])->name('chauffeurs.destroy')->middleware('can:transport.gerer');
     Route::get('/livraisons', [LivraisonController::class, 'index'])->name('livraisons.index');
-    Route::post('/livraisons', [LivraisonController::class, 'store'])->name('livraisons.store');
-    Route::patch('/livraisons/{livraison}/statut', [LivraisonController::class, 'statut'])->name('livraisons.statut');
-    Route::delete('/livraisons/{livraison}', [LivraisonController::class, 'destroy'])->name('livraisons.destroy');
+    Route::post('/livraisons', [LivraisonController::class, 'store'])->name('livraisons.store')->middleware('can:transport.gerer');
+    Route::patch('/livraisons/{livraison}/statut', [LivraisonController::class, 'statut'])->name('livraisons.statut')->middleware('can:transport.gerer');
+    Route::delete('/livraisons/{livraison}', [LivraisonController::class, 'destroy'])->name('livraisons.destroy')->middleware('can:transport.gerer');
 
     Route::get('/alertes', [AlerteController::class, 'index'])->name('alertes.index');
     Route::patch('/alertes/{alerte}', [AlerteController::class, 'update'])->name('alertes.update');
@@ -110,12 +110,14 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/rapports/{type}', [RapportController::class, 'show'])->name('rapports.show');
     Route::get('/rapports/{type}/pdf', [RapportController::class, 'pdf'])->name('rapports.pdf');
 
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::middleware('can:users.gerer')->group(function (): void {
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    });
 
-    Route::get('/audit', [AuditController::class, 'index'])->name('audit.index');
+    Route::get('/audit', [AuditController::class, 'index'])->name('audit.index')->middleware('can:audit.consulter');
 });

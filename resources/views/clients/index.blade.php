@@ -5,7 +5,11 @@
 @section('content')
     <div class="page-head">
         <h1>{{ __('app.clients.titre') }}</h1>
-        <div class="actions"><a class="btn" href="{{ route('clients.create') }}">＋ {{ __('app.clients.nouveau') }}</a></div>
+        <div class="actions">
+            @can('clients.gerer')
+                <a class="btn" href="{{ route('clients.create') }}">＋ {{ __('app.clients.nouveau') }}</a>
+            @endcan
+        </div>
     </div>
 
     <div class="card">
@@ -35,7 +39,9 @@
                         <td class="amount">{{ number_format($client->solde['dzd']['reste_a_payer'] ?? 0, 2, ',', ' ') }}</td>
                         <td>
                             <div class="row-actions">
-                                <a class="btn secondary small" href="{{ route('clients.edit', $client) }}">{{ __('app.commun.modifier') }}</a>
+                                @can('clients.gerer')
+                                    <a class="btn secondary small" href="{{ route('clients.edit', $client) }}">{{ __('app.commun.modifier') }}</a>
+                                @endcan
                             </div>
                         </td>
                     </tr>

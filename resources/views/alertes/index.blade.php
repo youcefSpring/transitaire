@@ -35,7 +35,15 @@
                 <thead><tr><th>{{ __('app.commun.type') }}</th><th>{{ __('app.alertes.message') }}</th><th>{{ __('app.commun.dossier') }}</th><th>{{ __('app.commun.date') }}</th><th>{{ __('app.commun.statut') }}</th><th class="amount">{{ __('app.commun.actions') }}</th></tr></thead>
                 <tbody>
                 @forelse ($alertes as $alerte)
-                    <tr>
+                    @php
+                        $classeLigne = match ($alerte->statut->value) {
+                            'nouvelle' => 'rstat-alerte',
+                            'lue' => 'rstat-neutre',
+                            'traitee' => 'rstat-succes',
+                            default => '',
+                        };
+                    @endphp
+                    <tr class="{{ $classeLigne }}">
                         <td><span class="badge {{ $alerte->statut === \App\Enums\AlerteStatut::Traitee ? 'success' : 'warning' }}">{{ __("app.alerte_type.{$alerte->type->value}") }}</span></td>
                         <td>{{ $alerte->message }}</td>
                         <td>@if ($alerte->dossier)<a class="mono" href="{{ route('dossiers.show', $alerte->dossier->numero) }}">{{ $alerte->dossier->numero }}</a>@else—@endif</td>
@@ -69,5 +77,28 @@
             </table>
         </div>
         {{ $alertes->links() }}
+    </div>
+
+    <div class="card">
+        <h2>{{ __('app.notifications.titre') }}</h2>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>{{ __('app.notifications.canal') }}</th><th>{{ __('app.notifications.destinataire') }}</th><th>{{ __('app.commun.client') }}</th><th>{{ __('app.notifications.sujet') }}</th><th>{{ __('app.commun.statut') }}</th><th>{{ __('app.notifications.envoyee_le') }}</th></tr></thead>
+                <tbody>
+                @forelse ($notifications as $notification)
+                    <tr>
+                        <td><span class="badge info">{{ __("app.notification_canal.{$notification->canal->value}") }}</span></td>
+                        <td class="mono">{{ $notification->destinataire }}</td>
+                        <td>{{ $notification->client?->raison_sociale ?? '—' }}</td>
+                        <td>{{ $notification->sujet }}</td>
+                        <td><span class="badge {{ $notification->statut === \App\Enums\NotificationStatut::Envoyee ? 'success' : ($notification->statut === \App\Enums\NotificationStatut::Echec ? 'danger' : 'warning') }}">{{ __("app.notification_statut.{$notification->statut->value}") }}</span></td>
+                        <td class="mono">{{ $notification->envoyee_le?->format('d/m/Y H:i') ?? '—' }}</td>
+                    </tr>
+                @empty
+                    <tr><td colspan="6" class="empty">{{ __('app.commun.aucune_donnee') }}</td></tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 @endsection

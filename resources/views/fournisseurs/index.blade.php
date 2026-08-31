@@ -5,7 +5,11 @@
 @section('content')
     <div class="page-head">
         <h1>{{ __('app.fournisseurs.titre') }}</h1>
-        <div class="actions"><a class="btn" href="{{ route('fournisseurs.create') }}">＋ {{ __('app.fournisseurs.nouveau') }}</a></div>
+        <div class="actions">
+            @can('fournisseurs.gerer')
+                <a class="btn" href="{{ route('fournisseurs.create') }}">＋ {{ __('app.fournisseurs.nouveau') }}</a>
+            @endcan
+        </div>
     </div>
 
     <div class="card">
@@ -35,12 +39,14 @@
                         <td>{{ $fournisseur->contact }}</td>
                         <td>
                             <div class="row-actions no-print">
-                                <a class="btn secondary small" href="{{ route('fournisseurs.edit', $fournisseur) }}">{{ __('app.commun.modifier') }}</a>
-                                <form method="POST" action="{{ route('fournisseurs.destroy', $fournisseur) }}" onsubmit="return confirm('{{ __('app.commun.confirmer') }}')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn danger small">✕</button>
-                                </form>
+                                @can('fournisseurs.gerer')
+                                    <a class="btn secondary small" href="{{ route('fournisseurs.edit', $fournisseur) }}">{{ __('app.commun.modifier') }}</a>
+                                    <form method="POST" action="{{ route('fournisseurs.destroy', $fournisseur) }}" onsubmit="return confirm('{{ __('app.commun.confirmer') }}')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn danger small">✕</button>
+                                    </form>
+                                @endcan
                             </div>
                         </td>
                     </tr>

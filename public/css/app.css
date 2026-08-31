@@ -338,6 +338,13 @@ tbody tr { transition: background 0.12s ease; }
 tbody tr:hover { background: var(--surface-2); }
 tbody tr:last-child td { border-block-end: 0; }
 
+/* Lignes teintées selon le statut (les variables *-soft s'adaptent au thème sombre) */
+tr.rstat-neutre { background: var(--neutral-soft); }
+tr.rstat-info { background: var(--info-soft); }
+tr.rstat-succes { background: var(--success-soft); }
+tr.rstat-alerte { background: var(--warning-soft); }
+tr.rstat-danger { background: var(--danger-soft); }
+
 .badge {
     display: inline-block;
     padding: 3px 10px;

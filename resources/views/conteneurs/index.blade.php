@@ -31,12 +31,21 @@
             </div>
         </x-filtres>
 
-        <div class="table-wrap">
-            <table>
-                <thead><tr><th>{{ __('app.conteneurs.numero') }}</th><th>{{ __('app.conteneurs.bl') }}</th><th>{{ __('app.dossiers.navire') }}</th><th>{{ __('app.dossiers.eta') }}</th><th>{{ __('app.dossiers.ata') }}</th><th>{{ __('app.commun.dossier') }}</th><th>{{ __('app.commun.statut') }}</th><th>{{ __('app.dossiers.date_sortie') }}</th><th>{{ __('app.dossiers.date_retour') }}</th></tr></thead>
-                <tbody>
-                @forelse ($conteneurs as $conteneur)
-                    <tr>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>{{ __('app.conteneurs.numero') }}</th><th>{{ __('app.conteneurs.bl') }}</th><th>{{ __('app.dossiers.navire') }}</th><th>{{ __('app.dossiers.eta') }}</th><th>{{ __('app.dossiers.ata') }}</th><th>{{ __('app.commun.dossier') }}</th><th>{{ __('app.commun.statut') }}</th><th>{{ __('app.dossiers.date_sortie') }}</th><th>{{ __('app.dossiers.date_retour') }}</th></tr></thead>
+            <tbody>
+            @forelse ($conteneurs as $conteneur)
+                @php
+                    $classeLigne = match ($conteneur->statut->value) {
+                        'en_attente' => 'rstat-alerte',
+                        'sorti' => 'rstat-info',
+                        'livre' => 'rstat-succes',
+                        'retourne' => 'rstat-neutre',
+                        default => '',
+                    };
+                @endphp
+                <tr class="{{ $classeLigne }}">
                         <td class="mono">{{ $conteneur->numero }}</td>
                         <td class="mono">{{ $conteneur->numero_bl }}</td>
                         <td>{{ $conteneur->navire }}</td>
@@ -56,6 +65,7 @@
         {{ $conteneurs->links() }}
     </div>
 
+    @can('dossiers.gerer')
     <div class="card no-print">
         <h2>{{ __('app.conteneurs.nouveau') }}</h2>
         <p class="hint hint-bloc">{{ __('app.aide.conteneurs.intro') }}</p>
@@ -94,4 +104,5 @@
             <button type="submit" class="btn" style="margin-block-start:14px">{{ __('app.commun.enregistrer') }}</button>
         </form>
     </div>
+    @endcan
 @endsection

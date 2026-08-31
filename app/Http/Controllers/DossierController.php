@@ -135,6 +135,8 @@ class DossierController extends Controller
     {
         $dossier = $this->dossiers->changerStatut($this->dossier($numero), $request->enum('statut', DossierStatut::class), $request->user());
 
+        $this->audit->journaliser($request->user(), "Passage du dossier #{$dossier->numero} au statut {$dossier->statut->value}", $dossier);
+
         return redirect()->route('dossiers.show', $dossier->numero)->with('message', __('app.messages.statut_mis_a_jour'));
     }
 
@@ -145,6 +147,14 @@ class DossierController extends Controller
         $dossier = $request->boolean('bloque')
             ? $this->dossiers->bloquer($dossier, (string) $request->input('raison'), $request->user())
             : $this->dossiers->debloquer($dossier, $request->user());
+
+        $this->audit->journaliser(
+            $request->user(),
+            $request->boolean('bloque')
+                ? "Blocage du dossier #{$dossier->numero} : {$dossier->raison_blocage}"
+                : "Déblocage du dossier #{$dossier->numero}",
+            $dossier,
+        );
 
         return redirect()->route('dossiers.show', $dossier->numero)->with('message', $request->boolean('bloque') ? __('app.messages.dossier_bloque') : __('app.messages.dossier_debloque'));
     }

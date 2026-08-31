@@ -11,6 +11,7 @@
         </div>
     </div>
 
+    @can('transport.gerer')
     <div class="card no-print">
         <h2>{{ __('app.transport.nouveau_chauffeur') }}</h2>
         <form class="inline-form" method="POST" action="{{ route('chauffeurs.store') }}">
@@ -20,6 +21,7 @@
             <button type="submit" class="btn small">＋</button>
         </form>
     </div>
+    @endcan
 
     <div class="card">
         <x-filtres :action="route('chauffeurs.index')" :paginateur="$chauffeurs">
@@ -35,11 +37,13 @@
                         <td class="mono">{{ $chauffeur->telephone }}</td>
                         <td>
                             <div class="row-actions no-print">
-                                <form method="POST" action="{{ route('chauffeurs.destroy', $chauffeur) }}" onsubmit="return confirm('{{ __('app.commun.confirmer') }}')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn danger small">✕</button>
-                                </form>
+                                @can('transport.gerer')
+                                    <form method="POST" action="{{ route('chauffeurs.destroy', $chauffeur) }}" onsubmit="return confirm('{{ __('app.commun.confirmer') }}')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn danger small">✕</button>
+                                    </form>
+                                @endcan
                             </div>
                         </td>
                     </tr>

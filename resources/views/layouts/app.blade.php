@@ -39,8 +39,12 @@
             <a href="{{ route('camions.index') }}" class="{{ request()->routeIs('camions.*', 'chauffeurs.*', 'livraisons.*') ? 'active' : '' }}" title="{{ __('app.nav.transport') }}"><span class="icon"><x-icone name="transport" /></span><span class="libelle">{{ __('app.nav.transport') }}</span></a>
             <a href="{{ route('alertes.index') }}" class="{{ request()->routeIs('alertes.*') ? 'active' : '' }}" title="{{ __('app.nav.alertes') }}"><span class="icon"><x-icone name="alertes" /></span><span class="libelle">{{ __('app.nav.alertes') }}</span></a>
             <a href="{{ route('rapports.index') }}" class="{{ request()->routeIs('rapports.*') ? 'active' : '' }}" title="{{ __('app.nav.rapports') }}"><span class="icon"><x-icone name="rapports" /></span><span class="libelle">{{ __('app.nav.rapports') }}</span></a>
-            <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }}" title="{{ __('app.nav.users') }}"><span class="icon"><x-icone name="users" /></span><span class="libelle">{{ __('app.nav.users') }}</span></a>
-            <a href="{{ route('audit.index') }}" class="{{ request()->routeIs('audit.*') ? 'active' : '' }}" title="{{ __('app.nav.audit') }}"><span class="icon"><x-icone name="audit" /></span><span class="libelle">{{ __('app.nav.audit') }}</span></a>
+            @can('users.gerer')
+                <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }}" title="{{ __('app.nav.users') }}"><span class="icon"><x-icone name="users" /></span><span class="libelle">{{ __('app.nav.users') }}</span></a>
+            @endcan
+            @can('audit.consulter')
+                <a href="{{ route('audit.index') }}" class="{{ request()->routeIs('audit.*') ? 'active' : '' }}" title="{{ __('app.nav.audit') }}"><span class="icon"><x-icone name="audit" /></span><span class="libelle">{{ __('app.nav.audit') }}</span></a>
+            @endcan
         </nav>
         <div class="sidebar-foot">
             <form method="POST" action="{{ route('logout') }}">

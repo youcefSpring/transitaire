@@ -5,7 +5,11 @@
 @section('content')
     <div class="page-head">
         <h1>{{ __('app.factures.titre') }}</h1>
-        <div class="actions"><a class="btn" href="{{ route('documents-commerciaux.create') }}">＋ {{ __('app.factures.nouveau') }}</a></div>
+        <div class="actions">
+            @can('documents-commerciaux.gerer')
+                <a class="btn" href="{{ route('documents-commerciaux.create') }}">＋ {{ __('app.factures.nouveau') }}</a>
+            @endcan
+        </div>
     </div>
 
     <div class="card">
@@ -45,7 +49,17 @@
                 <thead><tr><th>{{ __('app.commun.numero') }}</th><th>{{ __('app.commun.type') }}</th><th>{{ __('app.commun.client') }}</th><th>{{ __('app.commun.statut') }}</th><th>{{ __('app.factures.montant_total') }}</th><th>{{ __('app.factures.emission') }}</th><th>{{ __('app.factures.echeance') }}</th></tr></thead>
                 <tbody>
                 @forelse ($documents as $document)
-                    <tr>
+                    @php
+                        $classeLigne = match ($document->statut->value) {
+                            'brouillon' => 'rstat-neutre',
+                            'emis', 'envoye' => 'rstat-info',
+                            'accepte', 'confirme', 'paye' => 'rstat-succes',
+                            'partiellement_paye' => 'rstat-alerte',
+                            'refuse', 'annule' => 'rstat-danger',
+                            default => '',
+                        };
+                    @endphp
+                    <tr class="{{ $classeLigne }}">
                         <td><a class="mono" href="{{ route('documents-commerciaux.show', $document) }}">{{ $document->numero }}</a></td>
                         <td>{{ __("app.dc_type.{$document->type->value}") }}</td>
                         <td>{{ $document->client?->raison_sociale }}</td>

@@ -32,8 +32,15 @@ class AlerteService
         DocumentCategorie::BillOfLading,
     ];
 
+    /** Types d'alerte qui déclenchent une notification au client (§17). */
+    private const TYPES_NOTIFIABLES = [
+        AlerteType::FactureImpayee,
+        AlerteType::EcheanceImportante,
+    ];
+
     public function __construct(
         private readonly SoldeService $solde,
+        private readonly NotificationService $notifications,
     ) {}
 
     public function genererToutes(): int
@@ -259,6 +266,14 @@ class AlerteService
             'date_echeance' => $dateEcheance,
             'statut' => AlerteStatut::Nouvelle,
         ]);
+
+        if (in_array($type, self::TYPES_NOTIFIABLES, true) && $dossier?->client !== null) {
+            $this->notifications->mettreEnFile(
+                $dossier->client,
+                (string) str($message)->before(' : '),
+                $message,
+            );
+        }
 
         return true;
     }
