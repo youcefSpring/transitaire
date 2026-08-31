@@ -10,7 +10,7 @@
 @section('content')
     <div class="page-head">
         <h1>{{ __('app.factures.nouveau') }}</h1>
-        <div class="actions"><a class="btn secondary small" href="{{ route('documents-commerciaux.index') }}">← {{ __('app.commun.retour') }}</a></div>
+        <div class="actions"><a class="btn secondary small" href="{{ route('documents-commerciaux.index') }}"><span class="fl">←</span> {{ __('app.commun.retour') }}</a></div>
     </div>
 
     <div class="card">

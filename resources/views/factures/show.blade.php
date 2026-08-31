@@ -14,10 +14,10 @@
                         <option value="{{ $statut->value }}" {{ $document->statut === $statut ? 'selected' : '' }}>{{ __("app.dc_statut.{$statut->value}") }}</option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn small">↪ {{ __('app.commun.statut') }}</button>
+                <button type="submit" class="btn small"><span class="fl">↪</span> {{ __('app.commun.statut') }}</button>
             </form>
             <a class="btn small" href="{{ route('documents-commerciaux.pdf', $document) }}">🖨 {{ __('app.commun.pdf') }}</a>
-            <a class="btn secondary small" href="{{ route('documents-commerciaux.index') }}">← {{ __('app.commun.retour') }}</a>
+            <a class="btn secondary small" href="{{ route('documents-commerciaux.index') }}"><span class="fl">←</span> {{ __('app.commun.retour') }}</a>
         </div>
     </div>
 

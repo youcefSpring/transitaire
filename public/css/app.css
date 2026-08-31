@@ -28,8 +28,8 @@
     --radius: 10px;
     --radius-sm: 7px;
     --sidebar-w: 252px;
-    --font-display: "Fraunces", "Iowan Old Style", Georgia, "Noto Kufi Arabic", serif;
-    --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, "Noto Kufi Arabic", "Noto Sans", sans-serif;
+    --font-display: "Fraunces", "Noto Kufi Arabic", "Iowan Old Style", Georgia, serif;
+    --font-sans: "Inter", "Tajawal", "Segoe UI", system-ui, -apple-system, "Noto Kufi Arabic", "Noto Sans", sans-serif;
 }
 
 [data-theme="dark"] {
@@ -481,6 +481,17 @@ tbody tr:last-child td { border-block-end: 0; }
 }
 
 [dir="rtl"] .mono, [dir="rtl"] .amount { direction: ltr; unicode-bidi: embed; }
+
+/* ------ Typographie arabe ------ */
+/* Le crénage latin (négatif sur les titres, positif sur les libellés)
+   désarticule l'écriture arabe liée : on le neutralise en RTL. */
+[dir="rtl"] * { letter-spacing: 0 !important; }
+
+/* Les titres arabes (kufi) ont besoin d'un interlignage un peu plus ample. */
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3 { line-height: 1.35; }
+
+/* Flèches directionnelles : les miroiter en RTL (→ devient ← visuellement). */
+[dir="rtl"] .fl { display: inline-block; transform: scaleX(-1); }
 
 .landing {
     min-height: 100vh;

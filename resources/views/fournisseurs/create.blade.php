@@ -5,7 +5,7 @@
 @section('content')
     <div class="page-head">
         <h1>{{ __('app.fournisseurs.nouveau') }}</h1>
-        <div class="actions"><a class="btn secondary small" href="{{ route('fournisseurs.index') }}">← {{ __('app.commun.retour') }}</a></div>
+        <div class="actions"><a class="btn secondary small" href="{{ route('fournisseurs.index') }}"><span class="fl">←</span> {{ __('app.commun.retour') }}</a></div>
     </div>
 
     <div class="card">

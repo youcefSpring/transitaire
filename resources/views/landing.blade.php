@@ -7,8 +7,8 @@
     <title>{{ __('app.nom') }} — {{ __('app.landing.pied') }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}">
     <script>
         (function () {
             var t = localStorage.getItem('theme');
@@ -36,7 +36,7 @@
         <span class="badge primary">{{ __('app.landing.pied') }}</span>
         <h1>{{ __('app.landing.accroche') }}</h1>
         <p class="lead">{{ __('app.landing.sous_titre') }}</p>
-        <a class="btn" href="{{ route('login') }}">{{ __('app.auth.connexion') }} →</a>
+        <a class="btn" href="{{ route('login') }}">{{ __('app.auth.connexion') }} <span class="fl">→</span></a>
 
         <div class="chaine-titre">{{ __('app.landing.chaine_titre') }}</div>
         <div class="chaine">

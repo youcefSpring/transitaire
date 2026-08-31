@@ -5,7 +5,7 @@
 @section('content')
     <div class="page-head">
         <h1>{{ __('app.dossiers.modifier_titre') }} — <span class="mono">{{ $dossier->numero }}</span></h1>
-        <div class="actions"><a class="btn secondary small" href="{{ route('dossiers.show', $dossier->numero) }}">← {{ __('app.commun.retour') }}</a></div>
+        <div class="actions"><a class="btn secondary small" href="{{ route('dossiers.show', $dossier->numero) }}"><span class="fl">←</span> {{ __('app.commun.retour') }}</a></div>
     </div>
 
     <div class="card">

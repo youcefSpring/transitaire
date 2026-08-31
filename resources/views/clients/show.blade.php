@@ -7,7 +7,7 @@
         <h1>{{ $client->raison_sociale }}</h1>
         <div class="actions">
             <a class="btn secondary small" href="{{ route('clients.edit', $client) }}">{{ __('app.commun.modifier') }}</a>
-            <a class="btn secondary small" href="{{ route('clients.index') }}">← {{ __('app.commun.retour') }}</a>
+            <a class="btn secondary small" href="{{ route('clients.index') }}"><span class="fl">←</span> {{ __('app.commun.retour') }}</a>
         </div>
     </div>
 

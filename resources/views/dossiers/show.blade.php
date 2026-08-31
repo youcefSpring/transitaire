@@ -20,7 +20,7 @@
                             <option value="{{ $statut->value }}">{{ __("app.statut.{$statut->value}") }}</option>
                         @endforeach
                     </select>
-                    <button type="submit" class="btn small">↪ {{ __('app.dossiers.statut_suivant') }}</button>
+                    <button type="submit" class="btn small"><span class="fl">↪</span> {{ __('app.dossiers.statut_suivant') }}</button>
                 </form>
             @endunless
             <a class="btn secondary small" href="{{ route('dossiers.edit', $dossier->numero) }}">{{ __('app.commun.modifier') }}</a>

@@ -99,7 +99,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="statut" value="{{ $livraison->statut === \App\Enums\LivraisonStatut::Planifiee ? 'en_cours' : 'livree' }}">
-                                        <button type="submit" class="btn secondary small">↪</button>
+                                        <button type="submit" class="btn secondary small"><span class="fl">↪</span></button>
                                     </form>
                                 @endunless
                                 <form method="POST" action="{{ route('livraisons.destroy', $livraison) }}" onsubmit="return confirm('{{ __('app.commun.confirmer') }}')">

@@ -5,7 +5,7 @@
 @section('content')
     <div class="page-head">
         <h1>{{ __('app.clients.modifier_titre') }} — {{ $client->raison_sociale }}</h1>
-        <div class="actions"><a class="btn secondary small" href="{{ route('clients.show', $client) }}">← {{ __('app.commun.retour') }}</a></div>
+        <div class="actions"><a class="btn secondary small" href="{{ route('clients.show', $client) }}"><span class="fl">←</span> {{ __('app.commun.retour') }}</a></div>
     </div>
 
     <div class="card">
