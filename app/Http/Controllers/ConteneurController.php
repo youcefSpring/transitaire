@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ConteneurStoreRequest;
+use App\Http\Requests\ConteneurUpdateRequest;
+use App\Models\Client;
 use App\Models\Conteneur;
+use App\Models\Dossier;
 use App\Services\AuditService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
